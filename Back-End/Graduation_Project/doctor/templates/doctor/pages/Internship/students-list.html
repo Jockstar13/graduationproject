@@ -1,0 +1,50 @@
+{% extends "doctor/base.html" %}
+
+
+
+{% block content %}
+  <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
+    <div class="ps-3 py-4">
+      <h1 class="fw-light">Students List</h1>
+      <p class="lead ps-2">List of students that you supervise them in this semester.</p>
+    </div>
+
+
+    <section class="container mx-auto row">
+      <div class="containe table-responsive p-3">
+        <table class="table table-striped table-bordered shadow">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th  style="min-width: 8rem;">Name</th>
+              <th>ID</th>
+              <th>Status</th>
+              <th>Report</th>
+            </tr>
+          </thead>
+
+          <tbody class="table-group-divider">
+
+            {% comment %} 
+            ! NOTE => This is 'tr' (below this comment) to be repeated dynamically, change tag's content only.
+            {% endcomment %}
+            <tr>
+              <th>1</th>
+              <td>Belal Ali Khalil Shakra</td>
+              <td>0192452</td>
+              <td class="bg-success text-white">Completed</td>
+              <td><a href="{% url 'report' %}">view report</a></td>
+            </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+    </section>
+
+
+
+
+
+  </main>
+{% endblock content %}

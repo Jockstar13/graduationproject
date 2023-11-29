@@ -1,0 +1,61 @@
+{% extends "student/base.html" %}
+
+
+
+
+
+
+
+{% block content %}
+  <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
+    <h1 class="ps-3">Internship - Courses</h1>
+
+    <section class="container py-2">
+      <form action="" method="post">
+
+        <div id="courses">
+          <div id="course-info" class="my-4 alert alert-secondary rounded py-1 shadow">
+
+            <div class="container row mt-3 mb-1">
+              <div class="col-12 col-sm-12 col-md-10 col-lg-4 mb-1">
+                <div class="input-group border-a rounded">
+                  <label class="input-group-text fw-bold">Course</label>
+                  <input type="text" class="form-control" name="course" required>
+                </div>
+              </div>
+
+              <div class="col-12 col-sm-12 col-md-10 col-lg-4 mb-1">
+                <div class="input-group border-a rounded">
+                  <label class="input-group-text fw-bold">Hours</label>
+                  <input type="number" class="form-control" min="0" name="address" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="container">
+              <div class="input-group border-a rounded">
+                <label class="input-group-text fw-bold">Course Provider</label>
+                <input type="text" class="form-control" name="course-prov" required>
+              </div>
+
+              <div class="my-3 border">
+                <label for="formFile" class="form-label fw-bold ps-2">Upload Certificate</label>
+                <input class="form-control border border-1 border-dark" type="file" id="formFile">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="mb-5 ">
+          <button type="button" class="btn btn-primary" onclick="duplicate('courses', 'course-info', 10)">Add Course</button>
+        </div>
+
+        <div class="container row">
+          <input type="submit" value="Send" class="btn btn-primary w-50 col col-sm-12">
+        </div>
+      </form>
+    </section>
+
+  </main>
+{% endblock content %}

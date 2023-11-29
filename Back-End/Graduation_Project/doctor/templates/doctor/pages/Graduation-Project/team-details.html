@@ -1,0 +1,109 @@
+{% extends "doctor/base.html" %}
+
+
+
+
+
+  {% block content %}
+    <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
+      <h1 class="ps-3 py-4 fw-light">Team Details</h1>
+
+
+
+      <section class="container mt-4">
+        <div class="card border-primary">
+          <div class="card-header bg-primary text-white h5">project's name</div>
+          <div class="card-body text-primary">
+            <h5 class="card-title">Team Members</h5>
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <td>Chloe on the Turner</td>
+                  <td>2200017</td>
+                </tr>
+                <tr>
+                  <td>Evelyn on the Hill</td>
+                  <td>2200019</td>
+                </tr>
+                <tr>
+                  <td>Daniel who ate Moore</td>
+                  <td>2200018</td>
+                </tr>
+                <tr>
+                  <td>Michael the car Parker</td>
+                  <td>2200020</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div>
+              <h5 class="card-title">Project Overview</h5>
+              <p class="card-text text-black">
+                The project aims to develop an innovative mobile application facilitating seamless
+                communication among team members. Integrating real-time messaging, task allocation,
+                and file sharing features, it fosters efficient collaboration. The app targets enhancing
+                productivity and coordination within teams, streamlining workflows, and fostering a cohesive work environment.
+              </p>
+            </div>
+          </div>
+          <div class="card-footer bg-primary text-white">Project Status</div>
+        </div>
+      </section>
+
+
+
+
+
+
+
+      <section class="container mt-5">
+        <h2 class="py-4 fw-light">Project Timeline</h2>
+
+
+        {% comment %} 
+        ! NOTE => This is 'div' (below this comment) to be repeated dynamically, change tag's content only.
+        {% endcomment %}
+        <div class="p-3 my- rounded bg-white shadow-lg">
+          <div id="head" class="fw-bold">
+            <i class="bi bi-circle-fill text-danger"></i>
+            <span class="ps-3 pe-2">wed </span>25.2.2024
+          </div>
+
+          <div id="label" class="my-3">
+            <span class="badge text-bg-info">new release</span>
+            <span class="badge text-bg-warning">programming</span>
+            <span class="badge text-bg-primary">doc</span>
+          </div>
+
+
+          <div id="body" class="px-3 py-">
+            <p class="lead">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Commodi, nihil! Nam optio exercitationem
+              eveniet ratione quis qui repellendus quae molestias! <br>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, explicabo?
+            </p>
+          </div>
+
+          <div id="att" class="px-3 mb-4">
+            <div class="border-start border-4 border-success rounded shadow w-50 m-2 ps-2">
+              <i class="bi bi-file-text fs-1 "></i>
+              <span class="pb-2">documentation.pdf</span>
+            </div>
+            <div class="border-start border-4 border-success rounded shadow w-50 mx-2 ps-2">
+              <i class="bi bi-file-text fs-1 "></i>
+              <span class="d-bloc">project-forms.docx</span><br>
+            </div>
+          </div>
+
+
+          <div id="footer" class="my-2 px-3">
+            <span>by <b>belal-shakra</b> at 22:32:10</span>
+          </div>
+        </div>
+
+
+      </section>
+
+    </main>
+  {% endblock content %}

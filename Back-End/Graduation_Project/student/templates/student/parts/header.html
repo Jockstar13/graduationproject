@@ -1,0 +1,31 @@
+{% load static %}
+
+<!-- Header -->
+  <header class="mb-5" style="z-index: 999;">
+    <nav class="navbar bg-grad-blue fixed-top px-2 ps-3">
+      <button class="d-xl-none navbar-toggler fs-1" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
+        <i class="bi bi-list text-white"></i>
+      </button>
+
+      <div class="w-25" style="position: relative; right: rem;">
+        <a class="navbar-brand" href="{% url 'home'%}">
+          <img src="{% static 'assets/img/all/ju-logo-white.png' %}" alt="Logo" style="width: 12rem;">
+        </a>
+      </div>
+      
+      <div class="pe-xl-5 me-3">
+        <ul class="nav pe-xl-" style="position: relative; top: 5px">
+
+          <li class="nav-lin dropstart">
+            <i class="bi bi-bell-fill text-white fs-4" data-bs-toggle="dropdown"></i>
+
+              <ul class="dropdown-menu mt-5 p-0">
+                {% include "student/parts/notification.html" %}
+              </ul>
+
+          </li>
+        </ul>
+      </div>
+
+    </nav>
+  </header>

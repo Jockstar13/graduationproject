@@ -1,0 +1,58 @@
+{% extends "doctor/base.html" %}
+
+
+
+
+{% block content %}
+  <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
+    <h1 class="ps-3 py-4 fw-light">Graduation Project Teams</h1>
+
+
+
+    <section class="container mt-4">
+      <div class="row">
+
+        {% comment %} 
+        ! NOTE => This is 'div' (below this comment) to be repeated dynamically, change tag's content only.
+        {% endcomment %}
+        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3 mb-5" style="min-width: 20rem;">
+          <div class="card border-3 border-primary">
+            <h5 class="card-header text-center p-1 bg-primary text-white rounded-0">Team 1</h5>
+            <div class="card-body text-primary pb-0">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td>Chloe on the Turner</td>
+                    <td>2200017</td>
+                  </tr>
+                  <tr>
+                    <td>Daniel who ate Moore</td>
+                    <td>2200018</td>
+                  </tr>
+                  <tr>
+                    <td>Evelyn on the Hill</td>
+                    <td>2200019</td>
+                  </tr>
+                  <tr>
+                    <td>Michael the car Parker</td>
+                    <td>2200020</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer d-flex justify-content-between align-items-center border-3 border-primary">
+                <span class="fw-semibold text-truncate">Project Name</span>
+                <a class="btn btn-primary btn-sm" href="{% url 'team-details' %}" role="button">Details</a>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+      </div>
+    </section>
+  </main>
+{% endblock content %}

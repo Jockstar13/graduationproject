@@ -1,0 +1,10 @@
+Admin Panal Info :
+----------------------------------
+username  = gp
+password  = 1234
+
+
+Users Info :
+----------------------------------
+student's password = s123
+doctor's password   = 123

@@ -1,0 +1,34 @@
+body {
+  background-image: url("../img/all/main-bg.jpg");
+  overflow-x: hidden;
+  /* font-size: 15px; */
+}
+
+.bg-sky-blue {
+  background-color: #4590ff;
+}
+
+.bg-grad-blue {
+  background-image: linear-gradient(to right, #0d6efd, #2e80fa, #3d84ee, #68a1f6);
+}
+
+.border-a {
+  border: 1px solid black;
+}
+
+
+.dash-opt:hover  {
+  background-color: #a9cafb;
+  color: rgb(0, 0, 0) !important
+}
+
+.notif:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+
+
+.post {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 10px 30px 0px inset, rgba(0, 0, 0, 0.3) 0px 18px 20px -18px;
+}

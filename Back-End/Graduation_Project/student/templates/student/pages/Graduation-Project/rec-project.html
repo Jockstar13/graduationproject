@@ -1,0 +1,52 @@
+{% extends "student/base.html" %}
+
+
+
+{% block content %}
+  <main class="container-fluid py-5 px-4 col-lg-12 col-xl-9">
+    <section class="container py-5" id="rec-project">
+      <h2>Recommended Projects</h2>
+
+      <div class="table-responsive">
+          <table class="table table-striped my-5 shadow-lg">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Project Name</th>
+                <th>Description</th>
+                <th>Read</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              <tr>
+                <th>1</th>
+                <td>Lorem, ipsum.</td>
+                <td>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                  Necessitatibus voluptates quod dolore debitis consectetur aliquid?</td>
+                  <td><a href="" class="btn btn-primary">read</a></td>
+              </tr>
+      
+              <tr>
+                <th>2</th>
+                <td>Lorem, ipsum.</td>
+                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Repudiandae laboriosam labore neque dolores, hic ullam inventore,
+                  facere nam facilis perspiciatis, quisquam amet.</td>
+                  <td><a href="" class="btn btn-primary">read</a></td>
+              </tr>
+      
+              <tr>
+                <th>3</th>
+                <td>Lorem, ipsum dolor.</td>
+                <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                  Optio et delectus cupiditate quibusdam beatae tempora, placeat vel?
+                  Ipsum magni dicta nam debitis doloremque reiciendis consequatur!</td>
+                  <td><a href="" class="btn btn-primary">read</a></td>
+              </tr>
+      
+            </tbody>
+          </table>
+      </div>
+    </section>
+  </main>
+{% endblock content %}

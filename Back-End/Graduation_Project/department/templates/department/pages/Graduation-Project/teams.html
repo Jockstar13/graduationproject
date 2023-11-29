@@ -1,0 +1,39 @@
+{% extends "department/base.html" %}
+
+
+
+{% block content %}
+  <main class="container-fluid py-5 mt-5 col-lg-12 col-xl-9">
+    <h1 class="ps-3 py-4 fw-light">Graduation Project Teams</h1>
+
+
+
+    <section class="container py-1 mx-auto row">
+      <div class="col-sm-12 col-md-4 col-lg-6 col-xl-3 mb-5">
+        <div class="card border border-3 border-primary shadow">
+          <h5 class="card-header text-center p-1 bg-primary text-white rounded-0">Team 1</h5>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Belal Shakra</li>
+            <li class="list-group-item">Mohammad Hamza</li>
+            <li class="list-group-item">Hamza Husam</li>
+          </ul>
+          <div class="card-body">
+            <h5 class="card-title">Project Name</h5>
+            <p class="card-text text-truncate">
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </p>
+          </div>
+          <div class="card-body">
+            <a href="{% url 'team_details' %}" class="card-link btn btn-primary">Read</a>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </section>
+  </main>
+{% endblock content %}
+

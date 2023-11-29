@@ -1,0 +1,69 @@
+{% extends "doctor/base.html" %}
+
+
+
+  {% block nav %}
+    <div class="bg-grad-blue border border-2 border-white px-3 mb-5 mx-2 rounded shadow position-relative" style="top: -5px;">
+      <div id="" class="fs-5">
+
+        <nav class="navbar navbar-expand-lg d-inline-block px-">
+        
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav-content">
+            <i class="bi bi-list text-white fs-1"></i>
+          </button>
+
+          <div class="collapse navbar-collapse" id="nav-content">
+            <ul class="navbar-nav">
+              
+              <li class="nav-item px-3">
+                <a href="" class="nav-link text-white">
+                  <i class="bi bi-person-circle"></i>
+                  <span class="pe-1">username</span>
+                </a>
+              </li>
+
+              <li class="nav-item px-3">
+                <a href="" class="nav-link text-white">
+                  <i class="bi bi-bell-fill"></i>
+                  <span class="px-2">Notification</span>
+                </a>
+              </li>
+
+              <li class="nav-item px-3">
+                <a href="{% url 'signin' %}" class="nav-link text-white">
+                  <i class="bi bi-box-arrow-right"></i>
+                  <span class="px-2">Logout</span>
+                </a>
+              </li>
+              
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+  {% endblock nav %}
+
+
+
+
+
+
+  {% block content %}
+    <main>
+      <!-- Main Buttons -->
+      <section class="container pt-5 mt-5">
+        <div class="row p-3 d-flex justify-content-center">
+          <a href="{% url 'stu-list' %}"
+          type="button" class="col col-lg-4 p-5 m-3 rounded btn btn-outline-primary border-2 border-primary shadow-lg d-flex align-items-center justify-content-center">
+            <p class="display-5 fw-bold">Internship</p>
+          </a>
+    
+          <a href="{% url 'teams' %}"
+          type="button" class="col col-lg-4 p-5 m-3 rounded btn btn-outline-primary border-2 border-primary shadow-lg d-flex align-items-center justify-content-center">
+            <p class="display-5 fw-bold">Graduation Project</p>
+          </a>
+        </div>
+      </section>
+    </main>
+  {% endblock content %}
