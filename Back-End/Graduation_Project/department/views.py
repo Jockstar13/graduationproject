@@ -77,12 +77,14 @@ def signout(request):
 def dashboard(request):
   try:
     doc = Doctor.objects.get(doc=request.user)
-    if doc.permission is not 'doc&head' or 'sec':
+    if doc.permission != 'doc&head':
       logout(request)
       return redirect('login-form')
   except:
     logout(request)
     return redirect('login-form')
+
+
 
 
   context = {
