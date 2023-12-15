@@ -6,5 +6,5 @@ password  = 1234
 
 Users Info :
 ----------------------------------
-student's password = s123
+student's password = 123
 doctor's password   = 123

@@ -20,7 +20,7 @@
               <li class="nav-item px-3">
                 <a href="" class="nav-link text-white">
                   <i class="bi bi-person-circle"></i>
-                  <span class="pe-1">username</span>
+                  <span class="pe-1">{{user}}</span>
                 </a>
               </li>
 
@@ -32,7 +32,7 @@
               </li>
 
               <li class="nav-item px-3">
-                <a href="{% url 'login' %}" class="nav-link text-white">
+                <a href="{% url 'logout' %}" class="nav-link text-white">
                   <i class="bi bi-box-arrow-right"></i>
                   <span class="px-2">Logout</span>
                 </a>
@@ -53,7 +53,7 @@
       <section class="container">
         <div class="container text-center w-75 alert alert-primary">
           <p class="lead fs-3 text-primary">
-            username, you have successfully completed 90 hours,
+            {{user}}, you have successfully completed 90 hours,
             so you can register for the internship and graduation project
           </p>
         </div>

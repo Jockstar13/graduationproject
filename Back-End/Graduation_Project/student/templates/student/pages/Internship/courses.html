@@ -5,57 +5,96 @@
 
 
 
-
 {% block content %}
   <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
     <h1 class="ps-3">Internship - Courses</h1>
 
+
+    {% if success %}
+      <div class="alert alert-success mx-3"> {{success}} </div>
+    {% endif %}
+
+    {% if error %}
+      <div class="alert alert-danger mx-3"> {{error}} </div>
+    {% endif %}
+
+
+
+
     <section class="container py-2">
-      <form action="" method="post">
+      <div class="py-2 table-responsive">
+        <table class="table table-bordered border-dark">
+          <thead class="table-primary">
+            <tr>
+              <th class="px-3 py-2">#</th>
+              <th class="px-3 py-2">Course</th>
+              <th class="px-3 py-2">Hour</th>
+              <th class="px-3 py-2">Provider</th>
+              <th class="px-3 py-2">Certificate</th>
+              <th class="px-3 py-2">Update</th>
+              <th class="px-3 py-2">Delete</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+            <tr>
+              <th style="width: 0%;">1</th>
+              <td class="p-0"><input type="text" value="Course 1"></td>
+              <td class="p-0"><input type="text" value="90"></td>
+              <td class="p-0"><input type="text" value="Hoho Company"></td>
+              <td class="p-0"></td>
+              <td class="p-0"><input type="button" value="update" class="btn btn-primary"></td>
+              <td class="p-0"><input type="button" value="delete" class="btn btn-danger"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-        <div id="courses">
-          <div id="course-info" class="my-4 alert alert-secondary rounded py-1 shadow">
 
-            <div class="container row mt-3 mb-1">
-              <div class="col-12 col-sm-12 col-md-10 col-lg-4 mb-1">
-                <div class="input-group border-a rounded">
-                  <label class="input-group-text fw-bold">Course</label>
-                  <input type="text" class="form-control" name="course" required>
+    <section class="container py-2">
+      <form action="{% url 'courses' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="course-form">
+          <div id="courses">
+            <div class="my-4 alert alert-secondary rounded py-1 shadow">
+
+              <div class="container row mt-3 mb-1">
+                <div class="col-12 col-sm-12 col-md-10 col-lg-4 mb-1">
+                  <div class="input-group border-a rounded">
+                    <label class="input-group-text fw-bold">Course</label>
+                    {{form.course}}
+                  </div>
+                </div>
+
+                <div class="col-12 col-sm-12 col-md-10 col-lg-4 mb-1">
+                  <div class="input-group border-a rounded">
+                    <label class="input-group-text fw-bold">Hours</label>
+                    {{form.hour}}
+                  </div>
                 </div>
               </div>
 
-              <div class="col-12 col-sm-12 col-md-10 col-lg-4 mb-1">
+              <div class="container">
                 <div class="input-group border-a rounded">
-                  <label class="input-group-text fw-bold">Hours</label>
-                  <input type="number" class="form-control" min="0" name="address" required>
+                  <label class="input-group-text fw-bold">Course Provider</label>
+                  {{form.provider}}
                 </div>
-              </div>
-            </div>
 
-            <div class="container">
-              <div class="input-group border-a rounded">
-                <label class="input-group-text fw-bold">Course Provider</label>
-                <input type="text" class="form-control" name="course-prov" required>
-              </div>
-
-              <div class="my-3 border">
-                <label for="formFile" class="form-label fw-bold ps-2">Upload Certificate</label>
-                <input class="form-control border border-1 border-dark" type="file" id="formFile">
+                <div class="my-3 border">
+                  <label class="form-label fw-bold ps-2">Upload Certificate</label>
+                  {{form.certificate}}
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-
-        <div class="mb-5 ">
-          <button type="button" class="btn btn-primary" onclick="duplicate('courses', 'course-info', 10)">Add Course</button>
-        </div>
-
-        <div class="container row">
-          <input type="submit" value="Send" class="btn btn-primary w-50 col col-sm-12">
+        <div class="container d-flex justify-content-cente">
+          <input type="submit" value="Send" class="btn btn-primary w-25">
         </div>
       </form>
     </section>
+
 
   </main>
 {% endblock content %}

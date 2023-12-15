@@ -36,9 +36,9 @@
           </ul>
 
 
-          <li>
+          {% comment %} <li>
             <a href="#" class="nav-link link-dark dash-opt rounded">Settings</a>
-          </li>
+          </li> {% endcomment %}
         </ul>
 
 
@@ -47,10 +47,10 @@
         <div class="dropdown ms-2">
           <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown">
             <i class="bi bi-person-circle px-2 fs-4"></i>
-            <strong>doctor-name</strong>
+            <strong>{{user}}</strong>
           </a>
           <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="{% url 'signin' %}">Sign out</a></li>
+            <li><a class="dropdown-item" href="{% url 'log_out' %}">Sign out</a></li>
           </ul>
         </div>
       </div>

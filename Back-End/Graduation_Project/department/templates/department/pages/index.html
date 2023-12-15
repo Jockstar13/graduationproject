@@ -10,24 +10,28 @@
         <div class="py-5 px-4 border-a rounded shadow-lg">
           <h2 class="fw-bold mb-5 text-uppercase text-center">Login</h2>
 
-          <form action="./dashboard.html" method="post">
+          <form action="{% url 'login-form' %}" method="post">
+            {% csrf_token %}
+            
             <div class="form-floating mb-3 shadow border-a rounded">
-              <input type="email" class="form-control" id="email" placeholder="">
-              <label for="email">Email address</label>
+              {{form.username}}
+              <label>Username</label>
             </div>
 
             <div class="form-floating mb-3 shadow border-a rounded">
-              <input type="text" class="form-control" id="job-no" placeholder="">
-              <label for="job-no">Job number</label>
+              {{form.job_number}}
+              <label>Job number</label>
             </div>
 
             <div class="form-floating mb-3 shadow border-a rounded">
-              <input type="password" class="form-control" id="pass" placeholder="">
-              <label for="pass">Password</label>
+              {{form.password}}
+              <label>Password</label>
             </div>
 
-            <div class="mb-5">
-              <a class="small" href="#">Forgot password?</a>
+            <div class="mb-5 text-center text-danger">
+              <span>{{allow_error}}</span>
+              <span>{{auth_error}}</span>
+              <span>{{valid_error}}</span>
             </div>
 
             <div class="text-center">

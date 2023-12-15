@@ -33,10 +33,10 @@
           </ul>
 
 
-          <li>
+          {% comment %} <li>
             <a href="#" class="nav-link link-dark dash-opt rounded">Settings</a>
           </li>
-        </ul>
+        </ul> {% endcomment %}
 
 
 
@@ -47,7 +47,7 @@
             <strong class="text-truncate">Computer Science</strong>
           </a>
           <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="{% url 'login-form' %}">Sign out</a></li>
+            <li><a class="dropdown-item" href="{% url 'signout' %}">Sign out</a></li>
           </ul>
         </div>
       </div>

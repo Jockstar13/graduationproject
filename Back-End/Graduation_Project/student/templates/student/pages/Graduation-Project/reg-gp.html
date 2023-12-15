@@ -49,41 +49,40 @@
 
 
 
+          <h2>Students Info</h2>
 
-
-
-
-          <div class="container alert-secondary rounded py-1" id="add-stu">
-            <h2>Students Info</h2>
-            <div class="row alert alert-secondary rounded py-1" id="stu-info">
-              <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                <div class="input-group my-2 border-a rounded">
-                  <span class="input-group-text fw-bold">Full Name</span>
-                  <input type="text" class="form-control" name="full-name" required>
+          <div id="add-stu">
+            <div id="stu-info">
+              <div class="row alert alert-secondary rounded py-1">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                  <div class="input-group my-2 border-a rounded">
+                    <span class="input-group-text fw-bold">Full Name</span>
+                    <input type="text" class="form-control" name="full-name" required>
+                  </div>
+                </div>
+      
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                  <div class="input-group my-2 border-a rounded">
+                    <span class="input-group-text fw-bold">Major</span>
+                    <input type="text" class="form-control" name="major" required>
+                  </div>
+                </div>
+      
+                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+                  <div class="input-group my-2 border-a rounded">
+                    <span class="input-group-text fw-bold">Student ID</span>
+                    <input type="text" class="form-control" name="stu-id" required>
+                  </div>
                 </div>
               </div>
-    
-              <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                <div class="input-group my-2 border-a rounded">
-                  <span class="input-group-text fw-bold">Major</span>
-                  <input type="text" class="form-control" name="major" required>
-                </div>
-              </div>
-    
-              <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                <div class="input-group my-2 border-a rounded">
-                  <span class="input-group-text fw-bold">Student ID</span>
-                  <input type="text" class="form-control" name="stu-id" required>
-                </div>
-              </div>
-
-
             </div>
           </div>
 
 
 
-          <div class="px-3 m-3 ">
+
+
+          <div class="my-3 ">
             <button type="button" class="btn btn-primary" onclick="duplicate('add-stu', 'stu-info')">New Student</button>
           </div>
 

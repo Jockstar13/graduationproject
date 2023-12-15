@@ -32,3 +32,22 @@ body {
 .post {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 10px 30px 0px inset, rgba(0, 0, 0, 0.3) 0px 18px 20px -18px;
 }
+
+
+
+table td {
+  position: relative;
+}
+
+table td input {
+  position: absolute;
+  display: block;
+  top:0;
+  left:0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+}
