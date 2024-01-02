@@ -12,40 +12,30 @@
     <section class="container mt-4">
       <div class="row">
 
-        {% comment %} 
-        ! NOTE => This is 'div' (below this comment) to be repeated dynamically, change tag's content only.
-        {% endcomment %}
-        <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3 mb-5" style="min-width: 20rem;">
-          <div class="card border-3 border-primary">
-            <h5 class="card-header text-center p-1 bg-primary text-white rounded-0">Team 1</h5>
-            <div class="card-body text-primary pb-0">
-              <table class="table">
-                <tbody>
-                  <tr>
-                    <td>Chloe on the Turner</td>
-                    <td>2200017</td>
-                  </tr>
-                  <tr>
-                    <td>Daniel who ate Moore</td>
-                    <td>2200018</td>
-                  </tr>
-                  <tr>
-                    <td>Evelyn on the Hill</td>
-                    <td>2200019</td>
-                  </tr>
-                  <tr>
-                    <td>Michael the car Parker</td>
-                    <td>2200020</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="card-footer d-flex justify-content-between align-items-center border-3 border-primary">
-                <span class="fw-semibold text-truncate">Project Name</span>
-                <a class="btn btn-primary btn-sm" href="{% url 'team-details' %}" role="button">Details</a>
+        {% for key, value in teams.items %}
+          <div class="col-sm-12 col-md-4 col-lg-4 col-xl-3 mb-5" style="min-width: 18rem; min-height: 17rem;">
+            <div class="card border-3 border-primary h-100">
+              <h5 class="card-header text-center p-1 bg-primary text-white rounded-0">Team {{forloop.counter}}</h5>
+              <div class="card-body text-primary p-1 pb-0">
+                <table class="table">
+                  <tbody>
+                    {% for student in value %}
+                    <tr>
+                      <td>{{student.first_name}} {{student.last_name}}</td>
+                      <td>{{student}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <div class="card-footer d-flex justify-content-between align-items-center border-3 border-primary">
+                  <span class="fw-semibold text-truncate">{{key.project_name}}</span>
+                  <a class="btn btn-primary btn-sm" href="{% url 'team-details' key.id %}" role="button">Details</a>
+              </div>
             </div>
           </div>
-        </div>
+        
+        {% endfor %}
 
 
 

@@ -35,8 +35,8 @@
 
           {% comment %} <li>
             <a href="#" class="nav-link link-dark dash-opt rounded">Settings</a>
-          </li>
-        </ul> {% endcomment %}
+          </li>{% endcomment %}
+        </ul>
 
 
 
@@ -44,7 +44,7 @@
         <div class="dropdown ms-2">
           <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
             <i class="bi bi-diagram-3-fill pe-3 fs-4"></i>
-            <strong class="text-truncate">Computer Science</strong>
+            <strong class="text-truncate">{{dept.dept_name}}</strong>
           </a>
           <ul class="dropdown-menu text-small shadow">
             <li><a class="dropdown-item" href="{% url 'signout' %}">Sign out</a></li>

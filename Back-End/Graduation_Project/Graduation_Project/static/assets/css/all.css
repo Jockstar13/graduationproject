@@ -38,7 +38,8 @@ table td {
   position: relative;
 }
 
-table td input {
+table td input[type=text],
+table td input[type=file]{
   position: absolute;
   display: block;
   top:0;
@@ -49,4 +50,11 @@ table td input {
   border: none;
   padding: 10px;
   box-sizing: border-box;
+}
+
+
+.truncate-lines {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }

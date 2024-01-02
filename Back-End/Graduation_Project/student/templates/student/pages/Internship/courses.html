@@ -4,7 +4,6 @@
 
 
 
-
 {% block content %}
   <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
     <h1 class="ps-3">Internship - Courses</h1>
@@ -19,37 +18,89 @@
     {% endif %}
 
 
+    {% if records %}
+      <section class="container py-2">
+        <div class="py-2 table-responsive">
+          <table class="table table-bordered border-dark">
+            <thead class="table-primary">
+              <tr>
+                <th class="px-3 py-2" style="width: 0%;">#</th>
+                <th class="px-3 py-2">Course</th>
+                <th class="px-3 py-2" style="width: 0%;">Hour</th>
+                <th class="px-3 py-2">Provider</th>
+                <th class="px-3 py-2" colspan='2'>Certificate</th>
+                <th class="px-3 py-2">Notes</th>
+                <th class="px-3 py-2">Update</th>
+                <th class="px-3 py-2">Delete</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              {% for course in records %}
+              <tr>
+                <form action="{% url 'update_courses' course.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <th class="text-center">{{forloop.counter}}</th>
+                    <td class="p-1"><input type="text" value="{{course.course}}" name="course"></td>
+                    <td class="p-1"><input type="text" value="{{course.hour}}" name="hour"></td>
+                    <td class="p-1"><input type="text" value="{{course.provider}}" name="provider"></td>
+                    <td class="p-1" style="width: 18%;">{{course.certificate}}</td>
+                    <td class="p-1" style="width: 8%;"><input type="file" name="certificate" class="form-control"></td>
+                    <td class="p-1" style="width: 0%;">
+                      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#note{{forloop.counter}}">
+                        Click
+                      </button>
+                    </td>
+                    <td class="p-1" style="width: 0%;"><button type="submit" class="btn btn-primary">Update</button></td>
+                    <td class="p-1" style="width: 0%;"><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_m">Delete</button></td>
+                </form>
+                </tr>
+                <div class="modal fade" id="delete_m">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="title">Delete Course</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Are you sure to delete this course ?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <form action="{% url 'delete_courses' course.id%}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
 
-    <section class="container py-2">
-      <div class="py-2 table-responsive">
-        <table class="table table-bordered border-dark">
-          <thead class="table-primary">
-            <tr>
-              <th class="px-3 py-2">#</th>
-              <th class="px-3 py-2">Course</th>
-              <th class="px-3 py-2">Hour</th>
-              <th class="px-3 py-2">Provider</th>
-              <th class="px-3 py-2">Certificate</th>
-              <th class="px-3 py-2">Update</th>
-              <th class="px-3 py-2">Delete</th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr>
-              <th style="width: 0%;">1</th>
-              <td class="p-0"><input type="text" value="Course 1"></td>
-              <td class="p-0"><input type="text" value="90"></td>
-              <td class="p-0"><input type="text" value="Hoho Company"></td>
-              <td class="p-0"></td>
-              <td class="p-0"><input type="button" value="update" class="btn btn-primary"></td>
-              <td class="p-0"><input type="button" value="delete" class="btn btn-danger"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
+                <!-- Doctor Note -->
+                <div class="modal fade" id="note{{forloop.counter}}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">'{{course.course}}' Note</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        {% if course.int_cor_acc %}
+                          <h3>Accepted</h3>
+                        {% else %}
+                            <h3>Rejected</h3>
+                        {% endif %}
+                        <div class="py-3 px-2">{{course.doc_note}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    
+    {% endif %}
 
     <section class="container py-2">
       <form action="{% url 'courses' %}" method="post" enctype="multipart/form-data">
@@ -89,10 +140,48 @@
           </div>
         </div>
 
+        {{course_id}}
         <div class="container d-flex justify-content-cente">
-          <input type="submit" value="Send" class="btn btn-primary w-25">
+          <input type="submit" value="Submit" class="btn btn-primary w-25">
         </div>
       </form>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <section id="modal">
+
+
+      <div class="modal fade" id="delete_m">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="title">Delete Course</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure to delete this course ?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
     </section>
 
 

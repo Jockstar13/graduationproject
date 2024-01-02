@@ -4,80 +4,62 @@
 
   {% block content %}
     <main class="container-fluid py-5 px-4 col-lg-12 col-xl-9">
-      <h1 class="ps-3">Weekly Following Form</h1>
+      <div class="ps-3">
+        <h1>Weekly Following Form</h1>
+        <p class="lead ps-3">You can submit the form more than one.</p>
+      </div>
 
-      <section class="container py-2">
-        <h2 class="">First Week</h2>
 
 
-        <form action="" method="post">
+
+      <section class="container py-5">
+        <h2>First Week</h2>
+
+        <form action="{% url 'weekly_form' %}" method="post">
+          {% csrf_token %}
           <div id="week-follow">
-            <div id="week-info" class="mt-5 alert alert-secondary rounded py-1">
+
+            <div>
+              <select class="form-select mt-4 mb-2 border border-1 border-dark w-25 col-sm-12" name="student">
+                <option selected>Select Student</option>
+                {% for stu in stus %}
+                  <option value="{{stu}}">{{stu.first_name}} {{stu.last_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div id="week-info" class=" bg-secondary-subtle border border-2 border-secondary-subtle rounded">
               <div class="container row mt-3 mb-2">
                 <div class="col-sm-12 col-md-10 col-lg-4 mb-1">
                   <div class="input-group border-a rounded">
                     <label class="input-group-text fw-bold">Task</label>
-                    <input type="text" class="form-control" name="task" required>
+                    {{form.task}}
                   </div>
                 </div>
-        
+    
                 <div class="col-sm-12 col-md-10 col-lg-4 mb-1">
                   <div class="input-group border-a rounded">
                     <label class="input-group-text fw-bold">Hours</label>
-                    <input type="number" class="form-control" max="90" min="0" name="address" required placeholder="At least 15 hours in a week">
+                    {{form.hour}}
                   </div>
                 </div>
               </div>
     
-              <div class="container ms-">
+              <div class="container">
                 <div class="input-group mb-3 border-a rounded">
                   <span class="input-group-text fw-bold">Software or <br>Hardware that used</span><br>
-                  <textarea class="form-control" name="desc-task" style="height: 5rem;" required></textarea>
+                  {{form.sw_hw}}
                 </div>
               </div>
-            </div>
-          </div>
-    
-    
-    
-          <div class="container ms-3 mt-5">
-            <input type="button" value="Add New Task" class="btn btn-primary" onclick="duplicate('week-follow', 'week-info', 3)">
-          </div>
-    
-    
-    
-    
-          <div class="container py-5">
-            <h3>Student Evaluation</h3>
-    
-    
-            <div class="py-2 px-3">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input border border-1 border-primary" type="radio" name="stu-ev" id="q1" value="1" required>
-                <label class="form-check-label" for="q1">Bad</label>
-              </div>
-      
-              <div class="form-check form-check-inline">
-                <input class="form-check-input border border-1 border-primary" type="radio" name="stu-ev" id="q2" value="2" required>
-                <label class="form-check-label" for="q2">Good</label>
-              </div>
-      
-              <div class="form-check form-check-inline">
-                <input class="form-check-input border border-1 border-primary" type="radio" name="stu-ev" id="q3" value="3" required>
-                <label class="form-check-label" for="q3">Very Good</label>
-              </div>
-      
-              <div class="form-check form-check-inline">
-                <input class="form-check-input border border-1 border-primary" type="radio" name="stu-ev" id="q4" value="4" required>
-                <label class="form-check-label" for="q4">Excellent</label>
+
+              <div class="container">
+                <input type="text" name="week" value="First" hidden>
               </div>
             </div>
           </div>
     
-    
-    
-          <div class="container row">
-            <input type="submit" value="Send" class="btn btn-primary w-50 col col-sm-12">
+          <div class="container row my-3">
+            <input type="submit" value="Send" class="btn btn-primary w-25 col col-sm-12">
           </div>
         </form>
 

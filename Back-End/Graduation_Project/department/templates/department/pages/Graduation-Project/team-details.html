@@ -8,62 +8,105 @@
 
 
 
+    <section class="container mx-auto">
+      <div class="py-2 pb-5 table-responsive">
+        <table class="table-bordered bg-white">
+          <thead>
+            <th class="px-3 py-2">{{team.project_name}}</th>
+            <th class="px-3 py-2">{{team.project_type}}</th>
+            <th class="px-3 py-2">{{team.semester}}</th>
+            <th class="px-3 py-2">{{team.department}}</th>
+          </thead>
+        </table>
+      </div>
+    </section>
+
+
+
     <section class="container mt-4">
-      <div class="card border-primary">
-        <div class="card-header bg-primary text-white h5">project's name</div>
-        <div class="card-body text-primary">
-          <h5 class="card-title">Team Members</h5>
+      <div class="row">
+        <div class="col-sm-12 col-lg-8">
           <table class="table table-striped">
-            <tbody>
+            <thead class="table-primary">
+              <th>#</th>
+              <th>Supervisor</th>
+              <th>Email</th>
+            </thead>
+            <tbody class="table-group-divider">
               <tr>
-                <td>Chloe on the Turner</td>
-                <td>2200017</td>
+                <th style="width: 0%;">1</th>
+                <td>{{team.superviser_1}}</td>
+                <td>{{team.email_1}}</td>
               </tr>
               <tr>
-                <td>Evelyn on the Hill</td>
-                <td>2200019</td>
-              </tr>
-              <tr>
-                <td>Daniel who ate Moore</td>
-                <td>2200018</td>
-              </tr>
-              <tr>
-                <td>Michael the car Parker</td>
-                <td>2200020</td>
+                <th style="width: 0%;">2</th>
+                <td>{{team.superviser_2}}</td>
+                <td>{{team.email_2}}</td>
               </tr>
             </tbody>
           </table>
-
-          <div>
-            <h5 class="card-title">Project Overview</h5>
-            <p class="card-text text-black">
-              The project aims to develop an innovative mobile application facilitating seamless
-              communication among team members. Integrating real-time messaging, task allocation,
-              and file sharing features, it fosters efficient collaboration. The app targets enhancing
-              productivity and coordination within teams, streamlining workflows, and fostering a cohesive work environment.
-            </p>
-
-
-            <div class="pt-3 text-dark">
-              <div class="border-start border-5 border-success rounded shadow w-50 m-2 ps-2">
-                <i class="bi bi-file-text fs-1"></i>
-                <span class="pb-2">documentation.pdf</span>
-              </div>
-            </div>
-          </div>
         </div>
-        <div class="card-footer bg-primary text-white">Project Status</div>
       </div>
     </section>
+
 
 
 
 
     <section class="container mt-4">
-      <div>
-        
+      <div class="table-responsive my-4">
+        <table class="table table-striped">
+          <thead class="table-primary">
+            <th>Project Overview</th>
+          </thead>
+          <tbody class="table-group-divider">
+            <tr>
+              <td>{{team.project_idea}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
+
+      <div class="table-responsive my-4">
+        <table class="table table-striped">
+          <thead class="table-primary">
+            <th>Project Goals</th>
+          </thead>
+          <tbody class="table-group-divider">
+            <tr>
+              <td>{{team.project_goal}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+      <div class="table-responsive my-4">
+        <table class="table table-striped">
+          <thead class="table-primary">
+            <th>Project Technologies</th>
+          </thead>
+          <tbody class="table-group-divider">
+            <tr>
+              <td>{{team.technologies}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+
     </section>
+
+
+
+
+
+
+
+
+
 
 
   </main>

@@ -9,6 +9,7 @@
       <h1 class="fw-light">Students That Exceed 90 Hour</h1>
       <p class="lead ps-2">Students that exceed 90 hour in department, and their status with internship and a graduation project.</p>
     </div>
+    <p>{{type}}</p>
 
 
     <section class="container mx-auto row">
@@ -17,7 +18,7 @@
           <thead>
             <tr>
               <th>#</th>
-              <th  style="min-width: 8rem;">Nmae</th>
+              <th style="min-width: 8rem;">Name</th>
               <th>ID</th>
               <th>Email</th>
               <th>Internship</th>
@@ -26,14 +27,28 @@
           </thead>
 
           <tbody class="table-group-divider">
-            <tr>
-              <td>1</td>
-              <td>Belal Ali Khalil Shakra</td>
-              <td>bla0192452</td>
-              <td>bla0192452@ju.edu.jo</td>
-              <td><i class="bi bi-x-square-fill text-danger fs-5"></i></td>
-              <td><i class="bi bi-check-square-fill text-success fs-5"></i></td>
-            </tr>
+            {% for student in stu %}
+                <tr>
+                  <th>{{forloop.counter}}</th>
+                  <td>{{student.first_name}} {{student.last_name}}</td>
+                  <td>{{student.username}}</td>
+                  <td>{{student.email}}</td>
+                  <td>
+                    {% if student.in_internship == True %}
+                      <i class="bi bi-check-square-fill text-success fs-5">
+                    {% else %}
+                      <i class="bi bi-x-square-fill text-danger fs-5"></i>
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if student.in_gp == True %}
+                      <i class="bi bi-check-square-fill text-success fs-5">
+                    {% else %}
+                      <i class="bi bi-x-square-fill text-danger fs-5"></i>
+                    {% endif %}
+                  </td>
+                </tr>
+            {% endfor %}
 
           </tbody>
         </table>

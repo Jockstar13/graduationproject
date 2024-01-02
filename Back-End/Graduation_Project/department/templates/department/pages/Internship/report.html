@@ -11,162 +11,178 @@
     </div>
 
 
+
     <section class="container mx-auto">
       <div class="py-2 pb-5">
         <table class="table-bordered bg-white">
           <thead>
-            <th class="px-3 py-2">Belal Ali Khalil Shakra</th>
-            <th class="px-3 py-2">0192452</th>
-            <th class="px-3 py-2">Company</th>
-            <th class="px-3 py-2">90 Hours</th>
+            <th class="px-3 py-2">{{student_user.first_name}} {{student_user.last_name}}</th>
+            <th class="px-3 py-2">{{student_rec.student_id}}</th>
+            <th class="px-3 py-2">{{student_user.email}}</th>
+            <th class="px-3 py-2">
+              {{student_rec.doc_superviser.doc.first_name}}
+              {{student_rec.doc_superviser.doc.last_name}}
+            </th>
           </thead>
         </table>
       </div>
+    </section>
 
 
-      <div class="py-2 table-responsive">
-        <table class="table table-bordered border-dark">
-          <thead class="table-primary">
-            <th class="px-3 py-2">Company</th>
-            <th class="px-3 py-2">Address</th>
-            <th class="px-3 py-2">Start</th>
-            <th class="px-3 py-2">End</th>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr>
-              <td>Bla Bla</td>
-              <td>Amman/ bla bla</td>
-              <td>12-Feb-2024</td>
-              <td>26-May-2024</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
-
-      <div class="py-2 row">
-        <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
-          <div class="input-group border-a rounded">
-            <span class="input-group-text fw-bold">Superviser</span>
-          <input type="text" class="form-control bg-white" disabled value="Soso Fofo Momo">
-          </div>
-        </div>
-
-        <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
-          <div class="input-group border-a rounded">
-            <span class="input-group-text fw-bold">Email</span>
-          <input type="text" class="form-control bg-white" disabled value="soso@fofo.com">
-          </div>
-        </div>
-      </div>
-
-
-      <div class="py-5 table-responsive">
-        <div class="table-responsive">
-          <table class="table table-bordered border-dark w-100">
+    {% if stu_course %}
+      <section class="container mx-auto py-3">
+        <h2 class="fw-light">Courses</h2>
+        <div class="py-2 table-responsive">
+          <table class="table table-bordered border-dark">
             <thead class="table-primary">
-              <th>Description of Tasks</th>
-              <th>Technologies</th>
+              <th class="px-3 py-2">Course</th>
+              <th class="px-3 py-2">Hour</th>
+              <th class="px-3 py-2">Provider</th>
+              <th class="px-3 py-2">Certificate</th>
             </thead>
             <tbody class="table-group-divider">
-              <tr>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At iure sunt obcaecati eveniet commodi illo laborum esse nobis culpa! Reiciendis!</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At iure sunt obcaecati eveniet commodi illo laborum esse nobis culpa! Reiciendis!</td>
-              </tr>
+              {% for course in stu_course %}
+                <tr>
+                  <td>{{course.course}}</td>
+                  <td>{{course.hour}}</td>
+                  <td>{{course.provider}}</td>
+                  <td>{{course.certificate}}</td>
+                </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
-      </div>
-    </section>
+
+
+        <div class="py-2">
+          <div class="row">
+            <div class="col-lg-6 col-sm-12">
+              <div class="input-group border border-1 border-dark rounded" style="height: 8rem;">
+                <span class="input-group-text bg-primary-subtle fw-bold">Doctor Notes</span>
+                <textarea class="form-control bg-white" disabled>{{stu_course.doc_note}}</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    {% endif %}
 
 
 
 
 
-    <section class="container py-3 mx-auto">
-      <h2>Weekly Following Report</h2>
-
-
-      <div class="container pt-5">
-        <span class="fs-3 fw-semibold">Student Evaluation : </span>
-        <span class="fs-4 "> Very Good</span>
-      </div>
-
-      <div class="container pt-2">
-        <h3>First Week</h3>
-
-        <div class="py-2 table-responsive">
-          <div class="table-responsive">
-            <table class="table table-bordered border-dark w-100">
+    {% if stu_company %}
+      <section class="container mx-auto py-3">
+        <div>
+          <h2 class="fw-light">Company</h2>
+          <div class="py-2 table-responsive">
+            <table class="table table-bordered border-dark">
               <thead class="table-primary">
-                <th>Task</th>
-                <th>Software and Hardware</th>
-                <th>Hours</th>
+                <th class="px-3 py-2">Company</th>
+                <th class="px-3 py-2">Address</th>
+                <th class="px-3 py-2">Start</th>
+                <th class="px-3 py-2">End</th>
               </thead>
               <tbody class="table-group-divider">
                 <tr>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci, deleniti?</td>
-                  <td>15</td>
+                  <td>{{stu_company.company}}</td>
+                  <td>{{stu_company.address}}</td>
+                  <td>{{stu_company.start}}</td>
+                  <td>{{stu_company.end}}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
+    
+    
+          <div class="py-2 row">
+            <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
+              <div class="input-group border-a rounded">
+                <span class="input-group-text fw-bold">Superviser</span>
+              <input type="text" class="form-control bg-white" disabled value="{{stu_company.name}}">
+              </div>
+            </div>
+    
+            <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
+              <div class="input-group border-a rounded">
+                <span class="input-group-text fw-bold">Email</span>
+              <input type="text" class="form-control bg-white" disabled value="{{stu_company.email}}">
+              </div>
+            </div>
+          </div>
+    
+    
+          <div class="py-5 table-responsive">
+            <div class="table-responsive">
+              <table class="table table-bordered border-dark w-100">
+                <thead class="table-primary">
+                  <th>Description of Tasks</th>
+                  <th>Technologies</th>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr>
+                    <td>{{stu_company.description_of_tasks}}</td>
+                    <td>{{stu_company.technologies}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
 
 
-      <div class="container pt-1">
-        <h3>Second Week</h3>
-
-        <div class="py-2 table-responsive">
-          <div class="table-responsive">
-            <table class="table table-bordered border-dark w-100">
-              <thead class="table-primary">
-                <th>Task</th>
-                <th>Software and Hardware</th>
-                <th>Hours</th>
-              </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci, deleniti?</td>
-                  <td>15</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="py-2">
+            <div class="row">
+              <div class="col-lg-6 col-sm-12">
+                <div class="input-group border border-1 border-dark rounded" style="height: 8rem;">
+                  <span class="input-group-text bg-primary-subtle fw-bold">Doctor Notes</span>
+                  <textarea class="form-control bg-white" disabled>{{stu_company.doc_note}}</textarea>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+
+      </section>
+    {% endif %}
 
 
-      <div class="container pt-1">
-        <h3>Third Week</h3>
 
-        <div class="py-2 table-responsive">
-          <div class="table-responsive">
-            <table class="table table-bordered border-dark w-100">
-              <thead class="table-primary">
-                <th>Task</th>
-                <th>Software and Hardware</th>
-                <th>Hours</th>
-              </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci, deleniti?</td>
-                  <td>15</td>
-                </tr>
-              </tbody>
-            </table>
+    {% if stu_comany.int_com_acc %}
+      <section class="container py-3 mx-auto">
+        <h2>Weekly Following Report</h2>
+
+
+        <div class="container pt-5">
+          <span class="fs-3 fw-semibold">Student Evaluation : </span>
+          <span class="fs-4 "> Very Good</span>
+        </div>
+
+        <div class="container pt-2">
+          <h3>First Week</h3>
+
+          <div class="py-2 table-responsive">
+            <div class="table-responsive">
+              <table class="table table-bordered border-dark w-100">
+                <thead class="table-primary">
+                  <th>Task</th>
+                  <th>Software and Hardware</th>
+                  <th>Hours</th>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr>
+                    <td>Lorem, ipsum dolor.</td>
+                    <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci, deleniti?</td>
+                    <td>15</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-
-
-
-    </section>
+      </section>
+    {% endif %}
 
   </main>
 {% endblock content %}

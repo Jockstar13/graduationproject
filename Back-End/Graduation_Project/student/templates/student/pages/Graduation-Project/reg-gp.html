@@ -9,39 +9,40 @@
       <h1 id="title">Graduation Project</h1>
 
 
-      <div class="container py-2">
-        <form action="" method="post">
 
+      {% if form_validation %}
+        <div class="alert alert-danger">{{form_validation}}</div>
+      {% endif %}
+
+      {% if insert %}
+        <div class="alert alert-success">{{insert}}</div>
+      {% endif %}
+
+      {% if update %}
+        <div class="alert alert-success">{{update}}</div>
+      {% endif %}
+
+
+
+      <div class="container py-2">
+        <form action="{% url 'gp' %}" method="post">
+          {% csrf_token %}
 
           <div class="container row mt-3 mb-5">
             <!-- List Of Majors -->
             <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
               <div class="input-group mx-3 border-a rounded">
                 <label class="input-group-text fw-bold">Department</label>
-                <select class="form-select">
-                  <option selected>Choose...</option>
-                  <option value="CS">Computer Science</option>
-                  <option value="CIS">Computer Information System</option>
-                  <option value="BIT">Business Information Technology</option>
-                  <option value="AI">Artificial Intelligence</option>
-                  <option value="DS">Data Science</option>
-                  <option value="CyS">Cyber Security</option>
-                  <option value="mix">Mixed</option>
-                </select>
+                {{form.department}}
               </div>
             </div>
-    
-    
+            
+            
             <!-- Semester -->
             <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
               <div class="input-group mx-3 border-a rounded">
                 <label class="input-group-text fw-bold">Semester</label>
-                <select class="form-select">
-                  <option selected>Choose...</option>
-                  <option value="1st">First</option>
-                  <option value="2nd">Second</option>
-                  <option value="smr">Summer </option>
-                </select>
+                {{form.semester}}
               </div>
             </div>
           </div>
@@ -49,42 +50,67 @@
 
 
 
-          <h2>Students Info</h2>
+          <div class="container px-2 py-2">
+            <h2>Students Info</h2>
 
-          <div id="add-stu">
-            <div id="stu-info">
-              <div class="row alert alert-secondary rounded py-1">
-                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                  <div class="input-group my-2 border-a rounded">
-                    <span class="input-group-text fw-bold">Full Name</span>
-                    <input type="text" class="form-control" name="full-name" required>
-                  </div>
+
+            <div class="text-danger">{{valid_error}}</div>
+            {% if rejected_student %}
+              {% for student in rejected_student %}
+                <div class="text-danger">
+                  {{student.first_name}} {{student.last_name}} ({{student.username}}) is already in another team
                 </div>
-      
-                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                  <div class="input-group my-2 border-a rounded">
-                    <span class="input-group-text fw-bold">Major</span>
-                    <input type="text" class="form-control" name="major" required>
-                  </div>
-                </div>
-      
-                <div class="col-12 col-sm-12 col-md-6 col-lg-4">
-                  <div class="input-group my-2 border-a rounded">
-                    <span class="input-group-text fw-bold">Student ID</span>
-                    <input type="text" class="form-control" name="stu-id" required>
-                  </div>
-                </div>
-              </div>
-            </div>
+              {% endfor %}
+            {% endif %}
+            <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
+              <thead class="table-primary">
+                <th style="width: 0%;">#</th>
+                <th>Full Name</th>
+                <th>Student ID</th>
+                <th>Major</th>
+              </thead>
+
+              <tbody class="table-group-divider">
+                {% for stu in stu_team_num %}
+                  <tr>
+                    <th>{{forloop.counter}}</th>
+                    <td><input type="text" value="" class="form-control" name="name{{forloop.counter}}" placeholder="Write Here"></td>
+                    <td><input type="text" value="" class="form-control" name="id{{forloop.counter}}" placeholder="Make sure you write it correctly"></td>
+                    <td><input type="text" value="" class="form-control" name="major{{forloop.counter}}" placeholder="Write Here"></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
 
 
 
 
+          <div>
+            {% if student_info %}
+              <table class="table table-bordered table-striped mx-auto my-5" style="width: 98%;">
+                <thead class="bg-primary">
+                  <th style="width: 0%;">#</th>
+                  <th>Full Name</th>
+                  <th>Student ID</th>
+                  <th>Major</th>
+                </thead>
 
-          <div class="my-3 ">
-            <button type="button" class="btn btn-primary" onclick="duplicate('add-stu', 'stu-info')">New Student</button>
+                <tbody class="table-group-divider">
+                  {% for stu in student_info %}
+                    <tr>
+                      <th>{{forloop.counter}}</th>
+                      <td>{{stu.stu.first_name}} {{stu.stu.last_name}}</td>
+                      <td>{{stu.student_id}}</td>
+                      <td>{{stu.major}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            {% endif %}
           </div>
+
+
 
 
 
@@ -93,50 +119,79 @@
           <div class="container px-2 py-5" id="project-info">
             <h2>Project Info</h2>
 
-            <div class="row px-3 py-2">
-              <div class="col-sm-12 col-lg-6">
-                <div class="input-group mb-3 ms-0 border-a rounded">
-                  <span class="input-group-text fw-bold" name="Superviser">Superviser</span>
-                  <input type="text" class="form-control" required>
+
+            <div class="col-sm-12 col-lg-6 mb-3 px-3 pt-3">
+              <span class="fw-bold">Project Type : </span>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input border border-1 border-primary"
+                type="radio" name="project_type" id="app" value="Application" required>
+                <label class="form-check-label" for="app">Application</label>
+              </div>
+  
+              <div class="form-check form-check-inline">
+                <input class="form-check-input border border-1 border-primary"
+                type="radio" name="project_type" id="re" value="Research" required>
+                <label class="form-check-label" for="re">Research</label>
+              </div>
+            </div>
+
+            <div class="pb-3">
+              <div class="row px-3">
+                <div class="col-sm-12 col-lg-6">
+                  <div class="input-group mb-3 ms-0 border-a rounded">
+                    <span class="input-group-text fw-bold">Superviser</span>
+                    {{form.superviser_1}}
+                  </div>
+                </div>
+  
+                <div class="col-sm-12 col-lg-6 mb-3">
+                  <div class="input-group ms-0 border-a rounded">
+                    <span class="input-group-text fw-bold">Email</span>
+                    {{form.email_1}}
+                  </div>
+                  <div class="text-danger">{{email_error}}</div>
                 </div>
               </div>
-
-              <div class="col-sm-12 col-lg-6 mb-3">
-                <span class="fw-bold px-2">Project Type : </span>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input border-a" type="radio" name="project-type" id="app" value="app" required>
-                  <label class="form-check-label" for="app">Application</label>
+  
+  
+              <div class="row px-3">
+                <div class="col-sm-12 col-lg-6">
+                  <div class="input-group ms-0 mb-3 border-a rounded">
+                    <span class="input-group-text fw-bold">Superviser</span>
+                    {{form.superviser_2}}
+                  </div>
                 </div>
-    
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input border-a" type="radio" name="project-type" id="re" value="research" required>
-                  <label class="form-check-label" for="re">Research</label>
+  
+                <div class="col-sm-12 col-lg-6 mb-3">
+                  <div class="input-group ms-0 border-a rounded">
+                    <span class="input-group-text fw-bold">Email</span>
+                    {{form.email_2}}
+                  </div>
+                  <div class="text-danger">{{email_error}}</div>
                 </div>
               </div>
             </div>
 
 
-
-
             <div class="px-3">
               <div class="input-group mb-3 border-a rounded">
-                <span class="input-group-text fw-bold" name="Superviser">Project Name</span>
-                <input type="text" class="form-control" required>
+                <span class="input-group-text fw-bold">Project Name</span>
+                {{form.project_name}}
               </div>
 
               <div class="input-group mb-3 border-a rounded">
                 <span class="input-group-text fw-bold">Project Idea</span>
-                <textarea class="form-control" name="idea" style="height: 5rem;" required></textarea>
+                {{form.project_idea}}
               </div>
 
               <div class="input-group mb-3 border-a rounded">
                 <span class="input-group-text fw-bold">Project Goal</span>
-                <textarea class="form-control" name="goal" style="height: 5rem;" required></textarea>
+                {{form.project_goal}}
               </div>
 
               <div class="input-group mb-3 border-a rounded">
                 <span class="input-group-text fw-bold">Technologies</span>
-                <textarea class="form-control" name="tech" required></textarea>
+                {{form.technologies}}
               </div>
             </div>
           </div>

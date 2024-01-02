@@ -3,55 +3,107 @@
 
 
 {% block content %}
-  <main class="container py-5 pe-4 my-5 col-lg-12 col-xl-10">
+  <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
+
     <h1 class="ps-5">Timeline</h1>
+
+    {% if success %}
+    <div class="alert alert-success">
+      {{success}}
+    </div>
+    {% endif %}
 
 
 
     <section class="container m-3">
       <div class="p-3 my-5 rounded bg-white shadow-lg">
-          <h2>Create Post</h2>
+          <h2 class="fw-light">Create Post</h2>
 
-        <form action="" method="get">
+        <form action="{% url 'timeline' %}" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+
           <div id="label" class="my-3">
             <div class="d-inline-block">
-              <input type="checkbox" class="btn-check" id="doc">
-              <label class="btn btn-outline-primary py-0 px-1" for="doc">doc</label>
+              {{form.important}}
+              <label class="btn btn-outline-danger py-0 px-1" for="important">important</label>
             </div>
 
             <div class="d-inline-block">
-              <input type="checkbox" class="btn-check" id="new-release">
-              <label class="btn btn-outline-info py-0 px-1" for="new-release">new release</label>
+              {{form.doc}}
+              <label class="btn btn-outline-primary py-0 px-1" for="doc">documentation</label>
             </div>
 
             <div class="d-inline-block">
-              <input type="checkbox" class="btn-check" id="final-release">
-              <label class="btn btn-outline-danger py-0 px-1" for="final-release">final release</label>
+              {{form.new_release}}
+              <label class="btn btn-outline-info py-0 px-1" for="new_release">new release</label>
             </div>
 
             <div class="d-inline-block">
-              <input type="checkbox" class="btn-check" id="prog">
-              <label class="btn btn-outline-warning py-0 px-1" for="prog">programming</label>
+              {{form.final_release}}
+              <label class="btn btn-outline-success py-0 px-1" for="final_release">final release</label>
             </div>
 
             <div class="d-inline-block">
-              <input type="checkbox" class="btn-check" id="research">
-              <label class="btn btn-outline-primary py-0 px-1" for="research">research</label>
+              {{form.programming}}
+              <label class="btn btn-outline-warning py-0 px-1" for="programming">programming</label>
             </div>
 
             <div class="d-inline-block">
-              <input type="checkbox" class="btn-check" id="update">
+              {{form.research}}
+              <label class="btn btn-outline-dark py-0 px-1" for="research">research</label>
+            </div>
+
+            <div class="d-inline-block">
+              {{form.update}}
               <label class="btn btn-outline-secondary py-0 px-1" for="update">update</label>
+            </div>
+
+            <div class="d-inline-block">
+              {{form.web}}
+              <label class="btn btn-outline-success py-0 px-1" for="web">web</label>
+            </div>
+
+            <div class="d-inline-block">
+              {{form.mobile}}
+              <label class="btn btn-outline-dark py-0 px-1" for="mobile">mobile</label>
+            </div>
+
+            <div class="d-inline-block">
+              {{form.network}}
+              <label class="btn btn-outline-primary py-0 px-1" for="network">network</label>
+            </div>
+
+            <div class="d-inline-block">
+              {{form.cyber_security}}
+              <label class="btn btn-outline-warning py-0 px-1" for="cyber_security">cyber security</label>
+            </div>
+
+            <div class="d-inline-block">
+              {{form.ai}}
+              <label class="btn btn-outline-info py-0 px-1" for="ai">ai</label>
+            </div>
+
+            <div class="d-inline-block">
+              {{form.machine_learning}}
+              <label class="btn btn-outline-secondary py-0 px-1" for="machine_learning">machine learning</label>
+            </div>
+
+            <div class="d-inline-block">
+              {{form.problem}}
+              <label class="btn btn-outline-danger py-0 px-1" for="problem">problem</label>
             </div>
           </div>
 
-          <div class="mb-3 w-50">
-            <label for="file" class="form-labe"></label>
-            <input class="form-control border-1 border-dark" type="file" id="file" multiple>
+          <div class="row">
+            <div class="mb-3 col-md-12 col-lg-6">
+              <label for="file" class="form-labe"></label>
+              <input class="form-control border-1 border-dark" type="file" id="file" multiple>
+            </div>
           </div>
 
           <div class="form-floating mb-3">
-            <textarea class="form-control border-1 border-dark post" placeholder="write a post" id="post" style="height: 100px" ></textarea>
+            {{form.post}}
             <label for="post">Post</label>
           </div>
 
@@ -64,95 +116,59 @@
       </div>
     </section>
 
-    <section class="container m-3">
-      <div class="p-3 my-5 rounded bg-white shadow-lg" >
-        <div id="head" class="fw-bold">
-          <i class="bi bi-circle-fill text-success"></i>
-          <span class="ps-3 pe-2">mon </span>7.3.2024
-        </div>
+    {% for post in posts %}
+      <section class="container m-3">
 
-        <div id="label" class="my-3">
-          <span class="badge text-bg-secondary">update</span>
-        </div>
-
-
-        <div id="body" class="p-3">
-          <p class="lead">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Laboriosam tenetur consequatur in cum quaerat accusantium
-            exercitationem minus porro mollitia quos eveniet, doloribus sed.
-          </p>
-        </div>
-
-
-        <div id="footer" class="mt-2 px-3">
-          <span>by <b>hashim</b> at 22:32:10</span>
-        </div>
-      </div>
-
-      <div class="p-3 my-5 rounded bg-white shadow-lg" >
-        <div id="head" class="fw-bold">
-          <i class="bi bi-circle-fill text-danger"></i>
-          <span class="ps-3 pe-2">wed </span>25.2.2024
-        </div>
-
-        <div id="label" class="my-3">
-          <span class="badge text-bg-info">new release</span>
-          <span class="badge text-bg-warning">programming</span>
-          <span class="badge text-bg-primary">doc</span>
-        </div>
-
-
-        <div id="body" class="px-3 py-">
-          <p class="lead">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Commodi, nihil! Nam optio exercitationem
-            eveniet ratione quis qui repellendus quae molestias! <br>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, explicabo?
-          </p>
-        </div>
-
-        <div id="att" class="px-3 mb-4">
-          <div class="border-start border-4 border-success rounded shadow w-50 m-2 ps-2">
-            <i class="bi bi-file-text fs-1 "></i>
-            <span class="pb-2">documentation.pdf</span>
+        <div class="p-3 my-5 rounded bg-white shadow-lg" >
+          <div id="head" class="fw-bold">
+            {% if post.important or post.problem %}
+              <div class="spinner-grow text-danger" style="height: 20px; width: 20px;"></div>
+            {% else %}
+              <i class="bi bi-circle-fill text-primary"></i>
+            {% endif %}
+            <span class="ps-3 pe-2">{{post.date.day}}</span>{{post.date.date}}
           </div>
-          <div class="border-start border-4 border-success rounded shadow w-50 mx-2 ps-2">
-            <i class="bi bi-file-text fs-1 "></i>
-            <span class="d-bloc">project-forms.docx</span><br>
+
+          <div id="label" class="my-3">
+            {% if post.important %}<span class="badge text-bg-danger">important</span>{% endif %}
+            {% if post.doc %}<span class="badge text-bg-primary">documaentation</span>{% endif %}
+            {% if post.new_release %}<span class="badge text-bg-info">new release</span>{% endif %}
+            {% if post.final_release %}<span class="badge text-bg-success">final release</span>{% endif %}
+            {% if post.update %}<span class="badge text-bg-secondary">update</span>{% endif %}
+            {% if post.research %}<span class="badge text-bg-dark">research</span>{% endif %}
+            {% if post.programming %}<span class="badge text-bg-warning">programming</span>{% endif %}
+            {% if post.web %}<span class="badge text-bg-success">web</span>{% endif %}
+            {% if post.mobile %}<span class="badge text-bg-dark">mobile</span>{% endif %}
+            {% if post.network %}<span class="badge text-bg-primary">network</span>{% endif %}
+            {% if post.cyber_security %}<span class="badge text-bg-warning">cyber security</span>{% endif %}
+            {% if post.ai %}<span class="badge text-bg-info">ai</span>{% endif %}
+            {% if post.machine_learning %}<span class="badge text-bg-secondary">machine learning</span>{% endif %}
+            {% if post.problem %}<span class="badge text-bg-danger">problem</span>{% endif %}
+          </div>
+
+
+          <div id="body" class="px-3 py-">
+            <p class="lead">{{post.post}}</p>
+          </div>
+
+          {% comment %} <div id="att" class="px-3 mb-4">
+            <div class="border-start border-4 border-success rounded shadow w-50 m-2 ps-2">
+              <i class="bi bi-file-text fs-1 "></i>
+              <span class="pb-2">documentation.pdf</span>
+            </div>
+            <div class="border-start border-4 border-success rounded shadow w-50 mx-2 ps-2">
+              <i class="bi bi-file-text fs-1 "></i>
+              <span class="d-bloc">project-forms.docx</span><br>
+            </div>
+          </div> {% endcomment %}
+
+
+          <div id="footer" class="my-2 px-3">
+            <span>by <b>{{post.publisher.stu.first_name}} {{post.publisher.stu.last_name}}</b> at {{post.date.time}}</span>
           </div>
         </div>
-
-
-        <div id="footer" class="my-2 px-3">
-          <span>by <b>belal-shakra</b> at 22:32:10</span>
-        </div>
-      </div>
-
-      <div class="p-3 my-5 rounded bg-white shadow-lg" >
-        <div id="head" class="fw-bold">
-          <i class="bi bi-circle-fill text-primary"></i>
-          <span class="ps-3 pe-2">sun </span>15.2.2024
-        </div>
-
-        <div id="label" class="my-3">
-          <span class="badge text-bg-success">add member</span>
-        </div>
-
-
-        <div id="body" class="p-3">
-          <p class="lead">
-            now belal, hashim, ayham , mohammad supervised by dr.ansar.
-          </p>
-        </div>
-
-
-        <div id="footer" class="mt-2 px-3">
-          <span>at 22:32:10</span>
-        </div>
-      </div>
-
-    </section>
+      </section>
+    {% endfor %}
 
   </main>
 {% endblock content %}

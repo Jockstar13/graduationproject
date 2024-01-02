@@ -4,20 +4,23 @@
 
 
 {% block content %}
-  <main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
-    <div class="ps-3 py-4">
+
+<main class="container-fluid py-5 px-4 mt-5 col-lg-12 col-xl-9">
+  <div class="ps-3 py-4">
+
       <h1 class="fw-light">Internship Report</h1>
       <p class="lead ps-2"></p>
     </div>
 
 
 
+
     <section class="container mx-auto">
-      <div class="py-2 pb-5">
+      <div class="py-2">
         <table class="table-bordered bg-white">
           <thead>
-            <th class="px-3 py-2">Belal Ali Khalil Shakra</th>
-            <th class="px-3 py-2">0192452</th>
+            <th class="px-3 py-2">{{student.stu.first_name}} {{student.stu.last_name}}</th>
+            <th class="px-3 py-2">{{student.student_id}}</th>
             <th class="px-3 py-2">Company</th>
             <th class="px-3 py-2">90 Hours</th>
           </thead>
@@ -26,132 +29,286 @@
     </section>
 
 
-    <section class="container mx-auto">
-      <div class="py-2 table-responsive">
-        <table class="table table-bordered border-dark">
-          <thead class="table-primary">
-            <th class="px-3 py-2">Company</th>
-            <th class="px-3 py-2">Address</th>
-            <th class="px-3 py-2">Start</th>
-            <th class="px-3 py-2">End</th>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr>
-              <td>Bla Bla</td>
-              <td>Amman/ bla bla</td>
-              <td>12-Feb-2024</td>
-              <td>26-May-2024</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-
-      <div class="py-2 row">
-        <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
-          <div class="input-group border-a rounded">
-            <span class="input-group-text fw-bold">Superviser</span>
-          <input type="text" class="form-control bg-white" disabled value="Soso Fofo Momo">
+    {% if stu_company %}
+      <section class="container mx-auto">
+        <div class="py-5">
+          <div class="py-2 table-responsive">
+            <table class="table table-bordered border-dark">
+              <thead class="table-primary">
+                <th class="px-3 py-2">Company</th>
+                <th class="px-3 py-2">Address</th>
+                <th class="px-3 py-2">Start</th>
+                <th class="px-3 py-2">End</th>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr>
+                  <td>{{stu_company.company}}</td>
+                  <td>{{stu_company.address}}</td>
+                  <td>{{stu_company.start}}</td>
+                  <td>{{stu_company.end}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+  
+  
+          <div class="py-2 row">
+            <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
+              <div class="input-group border-a rounded">
+                <span class="input-group-text fw-bold">Superviser</span>
+              <input type="text" class="form-control bg-white" disabled value="{{stu_company.name}}">
+              </div>
+            </div>
+  
+            <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
+              <div class="input-group border-a rounded">
+                <span class="input-group-text fw-bold">Email</span>
+              <input type="text" class="form-control bg-white" disabled value="{{stu_company.email}}">
+              </div>
+            </div>
+          </div>
+  
+  
+          <div class="py-2 table-responsive">
+            <div class="table-responsive">
+              <table class="table table-bordered border-dark w-100">
+                <thead class="table-primary">
+                  <th>Description of Tasks</th>
+                  <th>Technologies</th>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr>
+                    <td>{{stu_company.description_of_tasks}}</td>
+                    <td>{{stu_company.technologies}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+  
+  
+  
+          <div class="mb-3">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approve-company">Approve</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#disapprove-company">Disapprove</button>
           </div>
         </div>
-
-        <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
-          <div class="input-group border-a rounded">
-            <span class="input-group-text fw-bold">Email</span>
-          <input type="text" class="form-control bg-white" disabled value="soso@fofo.com">
-          </div>
-        </div>
-      </div>
+      </section>
+    {% endif %}
 
 
-      <div class="py-5 table-responsive">
-        <div class="table-responsive">
-          <table class="table table-bordered border-dark w-100">
+
+
+
+    {% if stu_courses %}
+      <section class="container mx-auto">
+        <div class="py-2 table-responsive">
+          <table class="table table-bordered border-dark">
             <thead class="table-primary">
-              <th>Description of Tasks</th>
-              <th>Technologies</th>
+              <th style="width: 0%;">#</th>
+              <th class="px-3 py-2">Course</th>
+              <th class="px-3 py-2">Hours</th>
+              <th class="px-3 py-2">Provider</th>
+              <th class="px-3 py-2">Certificate</th>
+              <th class="px-3 py-2" colspan="2">Status</th>
             </thead>
             <tbody class="table-group-divider">
-              <tr>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At iure sunt obcaecati eveniet commodi illo laborum esse nobis culpa! Reiciendis!</td>
-                <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At iure sunt obcaecati eveniet commodi illo laborum esse nobis culpa! Reiciendis!</td>
-              </tr>
+              {% for course in stu_courses %}
+                <tr>
+                  <th>{{forloop.counter}}</th>
+                  <td>{{course.course}}</td>
+                  <td>{{course.hour}}</td>
+                  <td>{{course.provider}}</td>
+                  <td><a href="">{{course.certificate}}</a></td>
+                  <td  style="width: 0%;" class="border-end border-0">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approve-courses{{forloop.counter}}">Approve</button>
+                  </td>
+                  <td  style="width: 0%;">
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#disapprove-courses{{forloop.counter}}">Disapprove</button>
+                  </td>
+                
+
+
+
+                  {# Approve Courses Internship #}
+                  <div class="modal fade" id="approve-courses{{forloop.counter}}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5">Do you want to write any comment ?</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="{% url 'app_courses' course.id %}" method="post">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                              <label class="d-block p-1">Write Here:</label>
+                              <textarea name="app{{forloop.counter}}" id="" class="border border-1 border-dark rounded w-100 p-1" style="height: 7rem;"></textarea>
+                            </div>
+
+                            <div class="modal-footer">
+                              <input type="submit" value="Submit" class="btn btn-primary">
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  {# Disapprove Courses Internship #}
+                  <div class="modal fade" id="disapprove-courses{{forloop.counter}}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5">Why do want to reject internship ?</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="{% url 'disapp_courses' course.id %}" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                              <label class="d-block p-1">Write Here:</label>
+                              <textarea name="disapp{{forloop.counter}}" id="" class="border border-1 border-dark rounded w-100 p-1" style="height: 7rem;"></textarea>
+                            </div>
+
+                            <div class="modal-footer">
+                              <input type="submit" value="Disapprove" class="btn btn-danger">
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </tr>
+
+
+
+
+              {% endfor %}
             </tbody>
           </table>
         </div>
-      </div>
-    </section>
 
 
-
-    {% comment %} 
-    ! If the internship is courses, the below section will appear instead above.
-    {% endcomment %}
-    <!-- <section class="container mx-auto">
-      <div class="py-2 table-responsive">
-        <table class="table table-bordered border-dark">
-          <thead class="table-primary">
-            <th>#</th>
-            <th class="px-3 py-2">Course</th>
-            <th class="px-3 py-2">Hours</th>
-            <th class="px-3 py-2">Provider</th>
-            <th class="px-3 py-2">Certificate</th>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr>
-              <th>1</th>
-              <td>Web Development</td>
-              <td>75</td>
-              <td>Udemy</td>
-              <td><a href="">view certificate</a></td>
-            </tr>
-            <tr>
-              <th>1</th>
-              <td>MySQL</td>
-              <td>18</td>
-              <td>Udemy</td>
-              <td><a href="">view certificate</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section> -->
-
+      </section>
+    {% endif %}
 
 
 
 
 
     <section class="container mx-auto">
-      <div>
-        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#dis">Approve</button>
-        <button type="button" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#dis">Disapprove</button>
-      </div>
 
-
-      <div class="modal fade" id="dis" >
+      {# Approve Company Internship #}
+      <div class="modal fade" id="approve-company" >
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5">Do you want to write any comment ?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <form action="{% url 'report' %}" method="get">
+              <form action="{% url 'app_company' student.id %}" method="post">
+                {% csrf_token %}
 
                 <div class="mb-3">
-                  <label for="msg-txt">Write Here:</label>
-                  <textarea class="form-control border border-1 border-dark" id="msg-txt" name="report-msg"></textarea>
+                  <label>Write Here:</label>
+                  {{appcomform.app_company}}
                 </div>
 
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" onclick="alert_msg('Are you sure to do this action for a report ?')">Send</button>
+                  <input type="submit" value="Submit" class="btn btn-primary">
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
+
+
+      {# Disapprove Company Internship #}
+      <div class="modal fade" id="disapprove-company" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Why do want to reject internship ?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'disapp_company' student.id %}" method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                  <label>Write Here:</label>
+                  {{disappcomform.dis_company}}
+                </div>
+
+                <div class="modal-footer">
+                  <input type="submit" value="Disapprove" class="btn btn-danger">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+{% comment %} 
+      {# Approve Courses Internship #}
+      <div class="modal fade" id="approve-courses" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Do you want to write any comment ?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'app_courses' student.id %}" method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                  <label>Write Here:</label>
+                  {{appcorform.app_courses}}
+                </div>
+
+                <div class="modal-footer">
+                  <input type="submit" value="Submit" class="btn btn-primary">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {# Disapprove Courses Internship #}
+      <div class="modal fade" id="disapprove-courses" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5">Why do want to reject internship ?</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'disapp_courses' student.id %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label>Write Here:</label>
+                  {{disappcorform.dis_courses}}
+                </div>
+
+                <div class="modal-footer">
+                  <input type="submit" value="Disapprove" class="btn btn-danger">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div> {% endcomment %}
+
+
+        
     </section>
 
 
