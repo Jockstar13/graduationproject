@@ -1,8 +1,6 @@
 from .forms import CompanyForm, CourseForm, LoginForm, WeeklyForm, GPForm, TimelineForm
 from .models import CompanyInternship, CourseInternship, Student, WeeklyFollowing, GraduationProject, Timeline, StudentNotification
 from datetime import datetime
-from django.urls import resolve
-from django.conf import settings
 from doctor.models import Doctor, DoctorNotification
 from django.shortcuts import render, redirect
 from department.models import Department, DepartmentNotification
@@ -11,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-
+import time
 
 
 
@@ -23,9 +21,10 @@ def is_student(request):
   try:
     stu = Student.objects.get(stu=request.user)
     return stu
-  except ObjectDoesNotExist:
+  except:
     logout(request)
     return redirect('login')
+  
 
 
 
@@ -108,6 +107,8 @@ def read_all_notifi(request):
 ######################### LOGIN ###########################
 ###########################################################
 def index(request):
+
+
   if request.user.is_authenticated:
     return redirect('stu-home')
 
@@ -146,7 +147,6 @@ def index(request):
     else:
       context.setdefault('valid_error', 'Enter valid Data.')
 
-
   return render(request, 'student/pages/index.html', context)
 
 
@@ -170,6 +170,9 @@ def log_out(request):
 def home(request):
   student_rec = is_student(request)
 
+  if type(student_rec) != Student:
+    return redirect('login')
+
 
   context = {
     'title': 'Home',
@@ -192,6 +195,9 @@ def home(request):
 def GP_data(request):
   try:
     student_rec = is_student(request)
+
+
+
     recordes = GraduationProject.objects.all()
     for rec in recordes:
       stus = rec.members.all()
@@ -241,6 +247,15 @@ def gp(request):
   # Get Student Record
   student_rec = is_student(request)
 
+  if type(student_rec) != Student:
+    return redirect('login')
+
+
+
+  # Check If Student Register in Internship University Course
+  if student_rec.in_gp != True:
+    return redirect(request.META.get('HTTP_REFERER'))
+
 
   # Get Number of team's member
   dept = Department.objects.get(dept_name=student_rec.major)
@@ -281,7 +296,7 @@ def gp(request):
 
       # If doctors emails are incorrect, then reject the form.
       if not 'email_error' in context.keys():
-        # Try to Delete The Record From Database If User Want to Update The Data
+        # Try to Update The Record From Database
         try:
           student_rec = is_student(request)
           recordes = GraduationProject.objects.all()
@@ -445,6 +460,17 @@ def get_posts(rec):
 def timeline(request):
   student_rec = is_student(request)
 
+  if type(student_rec) != Student:
+    return redirect('login')
+
+
+
+  # Check If Student Register in Internship University Course
+  if student_rec.in_gp != True:
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+
   context = {
     'title': 'Timeline',
     'user': request.user,
@@ -581,7 +607,8 @@ def timeline(request):
 def rec_project(request):
   student_rec = is_student(request)
 
-
+  if type(student_rec) != Student:
+    return redirect('login')
 
 
   context = {
@@ -608,8 +635,14 @@ def rec_project(request):
 @login_required(login_url='login')
 def company(request):
   student_rec = is_student(request)
-  
-  
+
+
+  if type(student_rec) != Student:
+    return redirect('login')
+
+
+
+
   context = {
     'title': 'Internship - Company',
     'user': request.user,
@@ -619,7 +652,7 @@ def company(request):
 
   # Check If Student Register in Internship University Course
   if student_rec.in_internship != True:
-    return redirect('stu-home')
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
   if request.method == 'POST':
@@ -637,11 +670,18 @@ def company(request):
         context.setdefault('success', 'The form has been filled out successfully.')
 
 
-        # Push notification to the doctor
-        message   = f'{student_rec.stu.first_name} {student_rec.stu.last_name} fill the company internship form.'
-        notify_doctor(student_rec.doc_superviser.doc, subject='Insert Company - Internship', message=message, url_name='report', query_pk=student_rec.pk)
+        try:
+          # Push notification to the doctor
+          message   = f'{student_rec.stu.first_name} {student_rec.stu.last_name} fill the company internship form.'
+          notify_doctor(student_rec.doc_superviser.doc, subject='Insert Company - Internship', message=message, url_name='report', query_pk=student_rec.pk)
+        except:
+          pass
+
+
+        # Push notification to the department
         dept_name = Department.objects.get(dept_name=student_rec.major)
         notify_department(dept_name, subject='Insert Company - Internship', message=message, url_name='student-report', query_pk=student_rec.pk)
+
 
 
 
@@ -659,11 +699,17 @@ def company(request):
         context.setdefault('update', 'The form was updated successfully.')
 
 
-        # Push notification to the doctor
-        message   = f'{student_rec.stu.first_name} {student_rec.stu.last_name} update company internship form.'
-        notify_doctor(student_rec.doc_superviser.doc, subject='Update Company - Internship', message=message, url_name='report', query_pk=student_rec.pk)
+        try:
+          # Push notification to the doctor
+          message   = f'{student_rec.stu.first_name} {student_rec.stu.last_name} update company internship form.'
+          notify_doctor(student_rec.doc_superviser.doc, subject='Update Company - Internship', message=message, url_name='report', query_pk=student_rec.pk)
+        except:
+          pass
+
+        # Push notification to the department
         dept_name = Department.objects.get(dept_name=student_rec.major)
         notify_department(dept_name, subject='Update Company - Internship', message=message, url_name='student-report', query_pk=student_rec.pk)
+
 
 
     else:
@@ -709,6 +755,11 @@ def company(request):
 def delete_company(request):
   student_rec = is_student(request)
 
+  if type(student_rec) != Student:
+    return redirect('login')
+
+
+
   try:
     company = CompanyInternship.objects.get(student=request.user)
     company.delete()
@@ -742,9 +793,12 @@ def courses(request):
   # Get Student Record
   student_rec = is_student(request)
 
+  if type(student_rec) != Student:
+    return redirect('login')
+
   # Check If Student Register in Internship University Course
   if student_rec.in_internship != True:
-    return redirect('stu-home')
+    return redirect(request.META.get('HTTP_REFERER'))
 
   context = {
     'title': 'Internship - Courses',
@@ -810,6 +864,11 @@ def courses(request):
 def update_courses(request, pk):
   student_rec = is_student(request)
 
+  if type(student_rec) != Student:
+    return redirect('login')
+
+
+
   if request.method == 'POST':
     course = CourseInternship.objects.get(id=pk)
     course.course = request.POST['course']
@@ -860,20 +919,18 @@ def delete_courses(request, pk):
 #################################################################
 ######################### WEEKLY FORM ###########################
 #################################################################
-def weekly_form(request):
+def weekly_form(request, student):
   try:
-    email = 'soso@fofo.com'
-    emails = CompanyInternship.objects.all().values_list('email').distinct()
-    stus   = CompanyInternship.objects.all().values_list('student')
+    u = User.objects.get(username=student)
+    result = CompanyInternship.objects.get(student=u).student
 
-    result = CompanyInternship.objects.filter(email=email)
-    students = []
-    for stu in result:
-      students.append(stu.student)
+    s    = Student.objects.get(stu=u).major
+    week = Department.objects.get(dept_name=s).week
 
-
+    weeks = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth']
+    week = weeks[week-2]
   except:
-    pass
+    return redirect('close')
 
 
   if request.method == 'POST':
@@ -881,16 +938,16 @@ def weekly_form(request):
     if form.is_valid():
       data = form.cleaned_data
       u = User.objects.get(username=request.POST['student'])
-      WeeklyFollowing(stu_user=u,
-                      task=data['task'], hour=data['hour'], sw_hw=data['sw_hw']).save()
+      WeeklyFollowing(stu_user=u, task=data['task'], hour=data['hour'], sw_hw=data['sw_hw'], week=request.POST['week']).save()
+
 
 
   context = {
     'flag': True,
     'title': 'Weekly Following Form',
     'form': WeeklyForm(),
-    'emails': result,
-    'stus': students,
+    'student': result,
+    'week': week,
   }
 
 
@@ -908,36 +965,21 @@ def weekly_form(request):
 
 
 
-#################################################################
-##################### WEEKLY FORM Process #######################
-#################################################################
-def weekly_form_process(request):
-  
-  if request.method == 'POST':
-    form = WeeklyForm(request.POST)
-    if form.is_valid():
-      data = form.cleaned_data
-      u = User.objects.get(username=request.POST['student'])
-      WeeklyFollowing(stu_user=u.username,
-                      task=data['task'], hour=data['hour'], sw_hw=data['sw_hw']).save()
-
-
-  return redirect('weekly_form')
-####################################################################################################
-####################################################################################################
-
-
-
-
-
-
-
-
 
 ################################################################
 ##################### NOT FOUND PAGE 404 #######################
 ################################################################
 def handling_404(request, exception):
   return render(request, '404.html', {'flag', True},status=404)
+####################################################################################################
+####################################################################################################
+
+
+
+################################################################
+########################### Close ##############################
+################################################################
+def close(request):
+  return render(request, 'close.html', {})
 ####################################################################################################
 ####################################################################################################

@@ -22,7 +22,6 @@
               <th  style="min-width: 8rem;">Name</th>
               <th>Username</th>
               <th>Email</th>
-              <th>Status</th>
               <th>Report</th>
             </tr>
           </thead>
@@ -34,7 +33,6 @@
                 <td>{{stu.stu.first_name}} {{stu.stu.last_name}}</td>
                 <td>{{stu.stu.username}}</td>
                 <td>{{stu.stu.email}}</td>
-                <td class="bg-success text-white">Completed</td>
                 <td><a href="{% url 'report' stu.id %}">view report</a></td>
               </tr>
             {% endfor %}

@@ -126,7 +126,7 @@
             {% else %}
               <i class="bi bi-circle-fill text-primary"></i>
             {% endif %}
-            <span class="ps-3 pe-2">{{post.date.day}}</span>{{post.date.date}}
+            <span class="ps-3 pe-2">{{ post.date|date:"D" }}</span> {{post.date|date:"d M Y"}}
           </div>
 
           <div id="label" class="my-3">

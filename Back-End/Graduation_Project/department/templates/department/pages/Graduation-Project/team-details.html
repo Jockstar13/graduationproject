@@ -29,6 +29,33 @@
           <table class="table table-striped">
             <thead class="table-primary">
               <th>#</th>
+              <th>Student Name</th>
+              <th>Student Id</th>
+              <th>Major</th>
+            </thead>
+            <tbody class="table-group-divider">
+              {% for student in members %}
+                <tr>
+                  <th style="width: 0%;">1</th>
+                  <td>{{student.stu.first_name}} {{student.stu.last_name}}</td>
+                  <td>{{student.student_id}}</td>
+                  <td>{{student.major}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section class="container mt-4">
+      <div class="row">
+        <div class="col-sm-12 col-lg-8">
+          <table class="table table-striped">
+            <thead class="table-primary">
+              <th>#</th>
               <th>Supervisor</th>
               <th>Email</th>
             </thead>

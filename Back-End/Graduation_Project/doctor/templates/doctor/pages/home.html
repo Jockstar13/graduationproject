@@ -22,12 +22,23 @@
                 </a>
               </li>
 
-              <li class="nav-item px-3">
+              <li class="nav-item px-3" data-bs-toggle="dropdown">
                 <a href="" class="nav-link text-white">
-                  <i class="bi bi-bell-fill"></i>
+                    {% if notifications.there_is %}
+                    <span class=" position-relative">
+                      <i class="bi bi-bell-fill text-white"></i>
+                      <span class="position-absolute top-25 start-0 translate-middle p-2 bg-danger border border-light rounded-circle">
+                      </span>
+                    </span>
+                  {% else %}
+                    <i class="bi bi-bell-fill text-white"></i>
+                  {% endif %}
                   <span class="px-2">Notification</span>
                 </a>
               </li>
+              <ul class="dropdown-menu  p-0">
+                {% include "doctor/parts/notification.html" %}
+              </ul>
 
               <li class="nav-item px-3">
                 <a href="{% url 'log_out' %}" class="nav-link text-white">

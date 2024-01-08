@@ -13,19 +13,18 @@
 
 
       <section class="container py-5">
-        <h2>First Week</h2>
+        <h2>{{week}} Week</h2>
 
-        <form action="{% url 'weekly_form' %}" method="post">
+        <form action="" method="post">
           {% csrf_token %}
           <div id="week-follow">
 
-            <div>
-              <select class="form-select mt-4 mb-2 border border-1 border-dark w-25 col-sm-12" name="student">
-                <option selected>Select Student</option>
-                {% for stu in stus %}
-                  <option value="{{stu}}">{{stu.first_name}} {{stu.last_name}}</option>
-                {% endfor %}
-              </select>
+            <div class="row">
+              <div class=" col-sm-12 col-lg-3">
+                <select class="form-select mt-4 mb-2 border border-1 border-dark" name="student">
+                    <option selected value="{{student}}">{{student.first_name}} {{student.last_name}}</option>
+                </select>
+              </div>
             </div>
 
             <div id="week-info" class=" bg-secondary-subtle border border-2 border-secondary-subtle rounded">
@@ -50,10 +49,9 @@
                   <span class="input-group-text fw-bold">Software or <br>Hardware that used</span><br>
                   {{form.sw_hw}}
                 </div>
-              </div>
 
               <div class="container">
-                <input type="text" name="week" value="First" hidden>
+                <input type="hidden" name="week" value={{week}}>
               </div>
             </div>
           </div>

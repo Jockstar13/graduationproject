@@ -21,87 +21,19 @@
           <thead>
             <th class="px-3 py-2">{{student.stu.first_name}} {{student.stu.last_name}}</th>
             <th class="px-3 py-2">{{student.student_id}}</th>
-            <th class="px-3 py-2">Company</th>
-            <th class="px-3 py-2">90 Hours</th>
+            <th class="px-3 py-2">{{student.stu.email}}</th>
           </thead>
         </table>
       </div>
     </section>
 
 
-    {% if stu_company %}
-      <section class="container mx-auto">
-        <div class="py-5">
-          <div class="py-2 table-responsive">
-            <table class="table table-bordered border-dark">
-              <thead class="table-primary">
-                <th class="px-3 py-2">Company</th>
-                <th class="px-3 py-2">Address</th>
-                <th class="px-3 py-2">Start</th>
-                <th class="px-3 py-2">End</th>
-              </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>{{stu_company.company}}</td>
-                  <td>{{stu_company.address}}</td>
-                  <td>{{stu_company.start}}</td>
-                  <td>{{stu_company.end}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-  
-  
-          <div class="py-2 row">
-            <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
-              <div class="input-group border-a rounded">
-                <span class="input-group-text fw-bold">Superviser</span>
-              <input type="text" class="form-control bg-white" disabled value="{{stu_company.name}}">
-              </div>
-            </div>
-  
-            <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
-              <div class="input-group border-a rounded">
-                <span class="input-group-text fw-bold">Email</span>
-              <input type="text" class="form-control bg-white" disabled value="{{stu_company.email}}">
-              </div>
-            </div>
-          </div>
-  
-  
-          <div class="py-2 table-responsive">
-            <div class="table-responsive">
-              <table class="table table-bordered border-dark w-100">
-                <thead class="table-primary">
-                  <th>Description of Tasks</th>
-                  <th>Technologies</th>
-                </thead>
-                <tbody class="table-group-divider">
-                  <tr>
-                    <td>{{stu_company.description_of_tasks}}</td>
-                    <td>{{stu_company.technologies}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-  
-  
-  
-          <div class="mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approve-company">Approve</button>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#disapprove-company">Disapprove</button>
-          </div>
-        </div>
-      </section>
-    {% endif %}
-
-
 
 
 
     {% if stu_courses %}
-      <section class="container mx-auto">
+      <section class="container mx-auto py-5">
+        <h2 class="fw-light">Courses</h2>
         <div class="py-2 table-responsive">
           <table class="table table-bordered border-dark">
             <thead class="table-primary">
@@ -170,7 +102,7 @@
                             {% csrf_token %}
                             <div class="mb-3">
                               <label class="d-block p-1">Write Here:</label>
-                              <textarea name="disapp{{forloop.counter}}" id="" class="border border-1 border-dark rounded w-100 p-1" style="height: 7rem;"></textarea>
+                              <textarea required name="disapp{{forloop.counter}}" id="" class="border border-1 border-dark rounded w-100 p-1" style="height: 7rem;"></textarea>
                             </div>
 
                             <div class="modal-footer">
@@ -194,6 +126,81 @@
 
       </section>
     {% endif %}
+
+
+
+
+
+    {% if stu_company %}
+      <section class="container mx-auto">
+        <div class="py-3">
+          <h2 class="fw-light">Company</h2>
+          <div class="py-2 table-responsive">
+            <table class="table table-bordered border-dark">
+              <thead class="table-primary">
+                <th class="px-3 py-2">Company</th>
+                <th class="px-3 py-2">Address</th>
+                <th class="px-3 py-2">Start</th>
+                <th class="px-3 py-2">End</th>
+              </thead>
+              <tbody class="table-group-divider">
+                <tr>
+                  <td>{{stu_company.company}}</td>
+                  <td>{{stu_company.address}}</td>
+                  <td>{{stu_company.start}}</td>
+                  <td>{{stu_company.end}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+  
+  
+          <div class="py-2 row">
+            <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
+              <div class="input-group border-a rounded">
+                <span class="input-group-text fw-bold">Superviser</span>
+              <input type="text" class="form-control bg-white" disabled value="{{stu_company.name}}">
+              </div>
+            </div>
+  
+            <div class="col-sm-12 col-lg-6 col-xl-4 mb-2">
+              <div class="input-group border-a rounded">
+                <span class="input-group-text fw-bold">Email</span>
+              <input type="text" class="form-control bg-white" disabled value="{{stu_company.email}}">
+              </div>
+            </div>
+          </div>
+  
+  
+          <div class="py-2 table-responsive">
+            <div class="table-responsive">
+              <table class="table table-bordered border-dark w-100">
+                <thead class="table-primary">
+                  <th>Description of Tasks</th>
+                  <th>Technologies</th>
+                </thead>
+                <tbody class="table-group-divider">
+                  <tr>
+                    <td>{{stu_company.description_of_tasks}}</td>
+                    <td>{{stu_company.technologies}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+  
+  
+  
+          <div class="mb-3">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approve-company">Approve</button>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#disapprove-company">Disapprove</button>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+
+
 
 
 
@@ -253,155 +260,47 @@
           </div>
         </div>
       </div>
-
-{% comment %} 
-      {# Approve Courses Internship #}
-      <div class="modal fade" id="approve-courses" >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5">Do you want to write any comment ?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <form action="{% url 'app_courses' student.id %}" method="post">
-                {% csrf_token %}
-
-                <div class="mb-3">
-                  <label>Write Here:</label>
-                  {{appcorform.app_courses}}
-                </div>
-
-                <div class="modal-footer">
-                  <input type="submit" value="Submit" class="btn btn-primary">
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      {# Disapprove Courses Internship #}
-      <div class="modal fade" id="disapprove-courses" >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5">Why do want to reject internship ?</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <form action="{% url 'disapp_courses' student.id %}" method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                  <label>Write Here:</label>
-                  {{disappcorform.dis_courses}}
-                </div>
-
-                <div class="modal-footer">
-                  <input type="submit" value="Disapprove" class="btn btn-danger">
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div> {% endcomment %}
-
-
         
     </section>
 
 
-    {% comment %} 
-    ! NOTE => The commented 'section' (below this comment) will appear in web page after approve internship,
-    ! otherwise it will not appear.
-    {% endcomment %}
-    <!--
-    <section class="container py-3 mx-auto">
-      <h2>Weekly Following Report</h2>
 
 
-      <div class="container pt-5">
-        <span class="fs-3 fw-semibold">Student Evaluation : </span>
-        <span class="fs-4 "> Very Good</span>
-      </div>
+    {% if weeks %}
+      <section class="container py-5 mx-auto">
+        <h2 class="fw-light">Weekly Following Report</h2>
 
-      <div class="container pt-2">
-        <h3>First Week</h3>
+        {% for name in weeks_name %}
+          <div class="container pt-2">
+            <h3>{{name}} Week</h3>
 
-        <div class="py-2 table-responsive">
-          <div class="table-responsive">
-            <table class="table table-bordered border-dark w-100">
-              <thead class="table-primary">
-                <th>Task</th>
-                <th>Software and Hardware</th>
-                <th>Hours</th>
-              </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci, deleniti?</td>
-                  <td>15</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="py-2 table-responsive">
+              <div class="table-responsive">
+                <table class="table table-bordered border-dark w-100">
+                  <thead class="table-primary">
+                    <th style="width: 13rem;">Task</th>
+                    <th>Software and Hardware</th>
+                    <th style="width: 2rem;">Hours</th>
+                  </thead>
+                  <tbody class="table-group-divider">
+                    {% for week in weeks %}
+                      {% if week.week == name %}
+                        <tr>
+                          <td>{{week.task}}</td>
+                          <td>{{week.sw_hw}}</td>
+                          <td>{{week.hour}}</td>
+                        </tr>
+                      {% endif %}
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        {% endfor %}
 
-
-      <div class="container pt-1">
-        <h3>Second Week</h3>
-
-        <div class="py-2 table-responsive">
-          <div class="table-responsive">
-            <table class="table table-bordered border-dark w-100">
-              <thead class="table-primary">
-                <th>Task</th>
-                <th>Software and Hardware</th>
-                <th>Hours</th>
-              </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci, deleniti?</td>
-                  <td>15</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="container pt-1">
-        <h3>Third Week</h3>
-
-        <div class="py-2 table-responsive">
-          <div class="table-responsive">
-            <table class="table table-bordered border-dark w-100">
-              <thead class="table-primary">
-                <th>Task</th>
-                <th>Software and Hardware</th>
-                <th>Hours</th>
-              </thead>
-              <tbody class="table-group-divider">
-                <tr>
-                  <td>Lorem, ipsum dolor.</td>
-                  <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci, deleniti?</td>
-                  <td>15</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-
-
-
-    </section>
-    -->
+      </section>
+    {% endif %}
 
 
 

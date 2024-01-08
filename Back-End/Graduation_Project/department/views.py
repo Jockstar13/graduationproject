@@ -1,12 +1,17 @@
 from .forms import LoginForm, DashboardForm
 from .models import Department, DepartmentNotification
+from datetime import datetime
+from django.conf import settings
 from doctor.models import Doctor, DoctorNotification
-from student.models import Student, CompanyInternship, CourseInternship, GraduationProject, StudentNotification
+from student.models import Student, CompanyInternship, CourseInternship, GraduationProject, StudentNotification, WeeklyFollowing
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.template.loader import render_to_string
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+
 
 ################# Check If Head #################
 def is_head(request):
@@ -118,26 +123,27 @@ def signin(request):
     if form.is_valid():
       username = form.cleaned_data.get('username')
       password = form.cleaned_data.get('password')
-      job_num  = form.cleaned_data.get('job_number')
+      # job_num  = form.cleaned_data.get('job_number')
 
       user = authenticate(request, username=username, password=password)
       if user is not None:
         try:
           doc = User.objects.get(username=username)
           doc_data = Doctor.objects.get(doc=doc)
-          if (str(doc_data.job_number) == job_num):
-            if  doc_data.permission == 'doc&head':
-              login(request, user)
-              return redirect('dashboard')
-            else:
-              context.setdefault('allow_error', "You haven't permission to enter website.")
+          if  doc_data.permission == 'doc&head':
+            login(request, user)
+            return redirect('dashboard')
           else:
-            context.setdefault('auth_error', 'Your username or passsword or job number is incorrect.')
+            context.setdefault('allow_error', "You haven't permission to enter website.")
+          # if (str(doc_data.job_number) == job_num):
+
+          # else:
+          #   context.setdefault('auth_error', 'Your username or passsword or job number is incorrect.')
 
         except:
           context.setdefault('allow_error', "You haven't permission to enter website.")
       else:
-        context.setdefault('auth_error', 'Your username or passsword or job number is incorrect.')
+        context.setdefault('auth_error', 'Your username or passsword is incorrect.')
     else:
       context.setdefault('valid_error', 'Enter valid Data.')
 
@@ -226,12 +232,6 @@ def dashboard(request):
 
 
 
-
-
-
-
-
-
   context = {
     'title'           : 'Dashboard',
     'dept'            : department,
@@ -245,8 +245,6 @@ def dashboard(request):
     'vaildation_error': vaildation_error,
     'notifications'   : get_notification(request),
   }
-
-
 
   return render(request, 'department/pages/dashboard.html', context)
 
@@ -327,6 +325,7 @@ def teams(request):
 
   # Get all teams that belongs to department
   department_teams = []
+  members = []
   teams = GraduationProject.objects.all()
   for team in teams:
     for member in team.members.all():
@@ -336,6 +335,7 @@ def teams(request):
         break
       except ObjectDoesNotExist:
         pass
+    
 
 
 
@@ -402,12 +402,6 @@ def team_details(request, pk):
 
 
 
-
-
-
-
-
-
   context = {
     'title'        : 'Team Details',
     'dept'         : department,
@@ -433,14 +427,20 @@ def in_internship(request):
 
 
 
-
-
-
   # Get Department Record
   try:
     department = Department.objects.get(dept_name=head_rec.department)
   except:
     return redirect('login-form')
+
+
+  try:
+    weeks = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth']
+    week = department.week
+    week = weeks[week-1]
+  except:
+    pass
+
 
 
   # Get Doctor Info
@@ -484,7 +484,9 @@ def in_internship(request):
     'dept'         : department,
     'docs'         : doc_rec,
     'stus'         : stu_rec,
+    'week'         : week,
     'notifications': get_notification(request),
+    'internship_rec': CompanyInternship.objects.all().filter(int_com_acc=True),
   }
   return render(request, 'department/pages/Internship/in-internship.html', context)
 
@@ -532,6 +534,11 @@ def report(request, pk):
 
 
 
+  # Get weekly reports
+  report = WeeklyFollowing.objects.filter(stu_user=stu_user)
+  weeks_name = report.all().values_list('week', flat=True).distinct()
+
+
 
 
 
@@ -545,5 +552,81 @@ def report(request, pk):
     'stu_course'   : stu_course,
     'dept'         : department,
     'notifications': get_notification(request),
+    'weeks'        : report,
+    'weeks_name'   : weeks_name,
   }
   return render(request, 'department/pages/Internship/report.html', context)
+
+
+
+
+
+
+def send_email(request, dept, week):
+
+
+  dept = Department.objects.get(dept_name=dept)
+  week = dept.week
+  dept.week += 1
+  dept.save()
+
+
+  weeks = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh']
+  week = weeks[week-1]
+
+
+
+
+  if request.method == 'POST':
+
+    internship_rec = CompanyInternship.objects.all().filter(int_com_acc=True)
+    for column in internship_rec:
+
+
+        try:
+          stu = Student.objects.get(stu=column.student, major=dept.dept_name)
+        except:
+          continue
+
+      
+
+        msg_context = {
+        'company_name'    : column.company,
+        'student_name'    : stu.stu,
+        'superviser_name' : column.name,
+        'superviser_email': column.email,
+        'week'            : week,
+        }
+        # return render(request, 'department/pages/Internship/email_body.html', {'internship_rec':internship_rec})
+
+
+
+        html_message = render_to_string("department/pages/Internship/email_body.html", msg_context)
+
+        # Send an Email
+        send_mail(
+          subject=f'Internship Report - {week} Week', # subject
+          message='msg body',
+          from_email=settings.EMAIL_HOST_USER, # from email
+          recipient_list=[column.email], # to email
+          html_message=html_message,
+        )
+
+
+  return redirect('in-internship')
+
+
+
+
+
+
+
+
+
+################################################################
+##################### NOT FOUND PAGE 404 #######################
+################################################################
+def handling_404(request, exception):
+  return render(request, '404.html', {'flag', True},status=404)
+####################################################################################################
+####################################################################################################

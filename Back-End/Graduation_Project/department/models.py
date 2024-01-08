@@ -21,6 +21,8 @@ class Department(models.Model):
   start           = models.DateField(editable=True, default='')
   end             = models.DateField(editable=True, default='')
 
+  week            = models.PositiveIntegerField(default=1)
+
 
   def __str__(self):
     return self.dept_name
@@ -34,8 +36,8 @@ class Department(models.Model):
 class DepartmentNotification(models.Model):
   
   department = models.ForeignKey(Department, on_delete=models.CASCADE)
-  url_name  = models.CharField(max_length=24, null=True)
-  query_pk  = models.CharField(max_length=32, null=True)
+  url_name   = models.CharField(max_length=24, null=True)
+  query_pk   = models.CharField(max_length=32, null=True)
   subject    = models.CharField(max_length=56)
   message    = models.TextField()
   timestamp  = models.DateTimeField(auto_now_add=True)

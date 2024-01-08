@@ -21,10 +21,10 @@ urlpatterns = [
     path('update_course/<str:pk>', views.update_courses, name='update_courses'),
     path('delete_course/<str:pk>', views.delete_courses, name='delete_courses'),
 
-    path('weekly-following-form/', views.weekly_form, name='weekly_form'),
-    path('weekly_f_f/', views.weekly_form_process, name='weekly_form_process'),
+    path('weekly-following-form/<str:student>', views.weekly_form, name='weekly_form'),
+    path('close', views.close, name='close'),
 
-    
+
     # Notification
     path('notification/<str:pk>', views.redirect_notifi, name='redirect_notifi'),
     path('read_all_notification', views.read_all_notifi, name='read_all_notifi'),

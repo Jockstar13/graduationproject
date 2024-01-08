@@ -13,7 +13,7 @@
 
 
     <section class="container mx-auto">
-      <div class="py-2 pb-5">
+      <div class="table-responsive py-2 mb-5">
         <table class="table-bordered bg-white">
           <thead>
             <th class="px-3 py-2">{{student_user.first_name}} {{student_user.last_name}}</th>
@@ -40,6 +40,7 @@
               <th class="px-3 py-2">Hour</th>
               <th class="px-3 py-2">Provider</th>
               <th class="px-3 py-2">Certificate</th>
+              <th class="px-3 py-2" style="width: 0%;">Note</th>
             </thead>
             <tbody class="table-group-divider">
               {% for course in stu_course %}
@@ -48,23 +49,40 @@
                   <td>{{course.hour}}</td>
                   <td>{{course.provider}}</td>
                   <td>{{course.certificate}}</td>
+                  <td>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#note{{forloop.counter}}">
+                      Click
+                    </button>
+                  </td>
                 </tr>
+
+
+                <!-- Supervisor Note -->
+                <div class="modal fade" id="note{{forloop.counter}}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">'{{course.course}}' Note</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        {% if course.int_cor_acc %}
+                          <h3>Accepted</h3>
+                        {% else %}
+                            <h3>Rejected</h3>
+                        {% endif %}
+                        <div class="py-3 px-2">{{course.doc_note}}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               {% endfor %}
             </tbody>
           </table>
         </div>
 
 
-        <div class="py-2">
-          <div class="row">
-            <div class="col-lg-6 col-sm-12">
-              <div class="input-group border border-1 border-dark rounded" style="height: 8rem;">
-                <span class="input-group-text bg-primary-subtle fw-bold">Doctor Notes</span>
-                <textarea class="form-control bg-white" disabled>{{stu_course.doc_note}}</textarea>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </section>
     {% endif %}
 
@@ -148,41 +166,42 @@
 
 
 
-    {% if stu_comany.int_com_acc %}
-      <section class="container py-3 mx-auto">
-        <h2>Weekly Following Report</h2>
+    {% if weeks %}
+    <section class="container py-5 mx-auto">
+      <h2 class="fw-light">Weekly Following Report</h2>
 
-
-        <div class="container pt-5">
-          <span class="fs-3 fw-semibold">Student Evaluation : </span>
-          <span class="fs-4 "> Very Good</span>
-        </div>
-
+      {% for name in weeks_name %}
         <div class="container pt-2">
-          <h3>First Week</h3>
+          <h3 class="fw-light">{{name}} Week</h3>
 
           <div class="py-2 table-responsive">
             <div class="table-responsive">
               <table class="table table-bordered border-dark w-100">
                 <thead class="table-primary">
-                  <th>Task</th>
+                  <th style="width: 13rem;">Task</th>
                   <th>Software and Hardware</th>
-                  <th>Hours</th>
+                  <th style="width: 2rem;">Hours</th>
                 </thead>
                 <tbody class="table-group-divider">
-                  <tr>
-                    <td>Lorem, ipsum dolor.</td>
-                    <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci, deleniti?</td>
-                    <td>15</td>
-                  </tr>
+                  {% for week in weeks %}
+                    {% if week.week == name %}
+                      <tr>
+                        <td>{{week.task}}</td>
+                        <td>{{week.sw_hw}}</td>
+                        <td>{{week.hour}}</td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
+      {% endfor %}
 
-      </section>
-    {% endif %}
+    </section>
+  {% endif %}
+
 
   </main>
 {% endblock content %}

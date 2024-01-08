@@ -1,6 +1,6 @@
 from .forms import LoginForm, AppCompForm, DisappCompForm, AppCorForm, DisappCorForm
 from .models import Doctor, DoctorNotification
-from student.models import Student, CompanyInternship, CourseInternship, GraduationProject, Timeline, StudentNotification
+from student.models import Student, CompanyInternship, CourseInternship, GraduationProject, Timeline, StudentNotification, WeeklyFollowing
 from django.shortcuts import render, redirect
 from department.models import Department, DepartmentNotification
 from django.contrib.auth import authenticate, login, logout
@@ -120,24 +120,24 @@ def index(request):
     if form.is_valid():
       username = form.cleaned_data.get('username')
       password = form.cleaned_data.get('password')
-      job_num  = form.cleaned_data.get('job_number')
+      # job_num  = form.cleaned_data.get('job_number')
 
       user     = authenticate(request, username=username, password=password)
       if user is not None:
         try:
           doc = User.objects.get(username=username)
           doc_data = Doctor.objects.get(doc=doc)
-          if str(doc_data.job_number) == job_num:
+          # if str(doc_data.job_number) == job_num:
 
-            login(request, user)
-            return redirect('home')
-          else:
-            context.setdefault('auth_error', 'Your username or passsword or job number is incorrect.')
+          # else:
+          #   context.setdefault('auth_error', 'Your username or passsword or job number is incorrect.')
 
+          login(request, user)
+          return redirect('home')
         except:
           context.setdefault('allow_error', "You haven't permission to enter website.")
       else:
-        context.setdefault('auth_error', 'Your username or passsword or job number is incorrect.')
+        context.setdefault('auth_error', 'Your username or passsword is incorrect.')
     else:
       context.setdefault('valid_error', 'Enter valid Data.')
 
@@ -267,11 +267,6 @@ def team_details(request, pk):
     pass
 
 
-
-
-
-
-
   return render(request, 'doctor/pages/Graduation-Project/team-details.html', context)
 
 
@@ -321,7 +316,7 @@ def report(request, pk):
   # Get Student Info
   try:
     student = Student.objects.get(id=pk, doc_superviser=doctor_rec)
-    user = User.objects.get(username=student.stu)
+    user    = User.objects.get(username=student.stu)
   except:
     return redirect('stu-list')
 
@@ -329,11 +324,17 @@ def report(request, pk):
   try:
     stu_company = CompanyInternship.objects.get(student=user)
   except ObjectDoesNotExist:
-    stu_company   = None
+    stu_company = None
 
 
   # Get Student Courses Internship Info
   stu_courses = CourseInternship.objects.filter(stu=user)
+
+
+
+  # Get weekly reports
+  report = WeeklyFollowing.objects.filter(stu_user=user)
+  weeks_name = report.all().values_list('week', flat=True).distinct()
 
 
 
@@ -348,6 +349,8 @@ def report(request, pk):
     'appcorform'   : AppCorForm(),
     'disappcorform': DisappCorForm(),
     'notifications': get_notification(request),
+    'weeks'        : report,
+    'weeks_name'   : weeks_name,
   }
   return render(request, 'doctor/pages/Internship/report.html', context)
 
@@ -476,3 +479,14 @@ def disapp_courses(request, pk):
       student = Student.objects.get(stu=s_course.stu).pk
     else:
       return redirect('report', student)
+
+
+
+
+################################################################
+##################### NOT FOUND PAGE 404 #######################
+################################################################
+def handling_404(request, exception):
+  return render(request, '404.html', {'flag', True},status=404)
+####################################################################################################
+####################################################################################################

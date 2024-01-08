@@ -14,8 +14,12 @@ urlpatterns = [
     # Internship
     path('students-in-internship', views.in_internship, name='in-internship'),
     path('report/<str:pk>', views.report, name='student-report'),
+    path('send_email/<str:dept>/<str:week>', views.send_email, name='send_email'),
 
     # Notification
     path('notification/<str:pk>', views.redirect_notification, name='redirect-notification'),
     path('read_all_notification', views.read_all_notification, name='read_all_notification'),
 ]
+
+
+handler404 = 'doctor.views.handling_404'

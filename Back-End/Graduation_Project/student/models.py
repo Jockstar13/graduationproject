@@ -48,7 +48,7 @@ class GraduationProject(models.Model):
 
 
   # Student
-  members    = models.ManyToManyField(User, null=True)
+  members    = models.ManyToManyField(User)
 
   # Main
   department = models.CharField(max_length=32)
@@ -158,7 +158,7 @@ class CourseInternship(models.Model):
   certificate = models.FileField(upload_to=f'Files/Internship/Courses/%Y/%B', null=True)
 
   # Acceptance
-  doc_note    = models.TextField(max_length=450, null=True, default='Ther is no Notes')
+  doc_note    = models.TextField(max_length=450, null=True, default='There is no any note yet.')
   int_cor_acc = models.BooleanField(verbose_name='internship acceptance',default=False)
 
 
