@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime, date
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -22,6 +23,18 @@ class Department(models.Model):
   end             = models.DateField(editable=True, default='')
 
   week            = models.PositiveIntegerField(default=1)
+
+
+
+  def is_less_than_start(self):
+    today_date = date.today()
+    return self.start > today_date
+
+  def is_greater_than_end(self):
+    today_date = date.today()
+    return self.end < today_date
+
+
 
 
   def __str__(self):

@@ -3,7 +3,7 @@
 
 
 {% block content %}
-  <main class="container-fluid py-5 px- mt-5 col-lg-12 col-xl-9">
+  <main class="container-fluid py-5 px- mt-5 col-lg-12 col-xl-8">
     <h1 class="ps-3 py-4 fw-light">Dashboard</h1>
 
     <section class="container py-1">
@@ -15,7 +15,7 @@
         <form action="{% url 'dashboard'%}" method="post">
           {% csrf_token %}
 
-          <div class="row mt-3 mb-2 w-75">
+          <div class="row mt-3 mb-">
             <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
               <div class="input-group me-3 border-a rounded">
                 <label class="input-group-text fw-bold">Start</label>
@@ -29,18 +29,25 @@
                 {{form.end}}
               </div>
             </div>
-          </div>
 
-
-          <div class="row w-75">
             <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
               <div class="input-group mb-3 border-a rounded">
                 <span class="input-group-text fw-bold">No. of Team's Members</span>
                 {{form.team_mem_num}}
               </div>
             </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-12 col-md-10 col-lg-4 mb-1">
+              <div class="input-group mb-3 border-a rounded">
+                <span class="input-group-text fw-bold">Internship Week</span>
+                {{form.internship_week}}
+              </div>
+            </div>
             <div class="col-sm-12 col-md-10 col-lg-4 mb-3">
-              <input type="submit" value="Save" class="form-control btn btn-primary w-7">
+              <input type="submit" value="Save" class="form-control btn btn-primary">
             </div>
             <span class="text-danger">{{vaildation_error}}</span>
           </div>

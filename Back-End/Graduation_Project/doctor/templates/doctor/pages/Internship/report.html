@@ -51,7 +51,9 @@
                   <td>{{course.course}}</td>
                   <td>{{course.hour}}</td>
                   <td>{{course.provider}}</td>
-                  <td><a href="">{{course.certificate}}</a></td>
+                  <td class="p-2" style="width: 15rem;">
+                    <a href="{% url 'download_file' course.id %}" class="d-inline-block text-truncate" style="max-width: 15rem;">{{course.certificate}}</a>
+                  </td>
                   <td  style="width: 0%;" class="border-end border-0">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#approve-courses{{forloop.counter}}">Approve</button>
                   </td>
@@ -272,7 +274,7 @@
 
         {% for name in weeks_name %}
           <div class="container pt-2">
-            <h3>{{name}} Week</h3>
+            <h3 class="fw-light">{{name}} Week</h3>
 
             <div class="py-2 table-responsive">
               <div class="table-responsive">

@@ -1,16 +1,16 @@
-from .forms import CompanyForm, CourseForm, LoginForm, WeeklyForm, GPForm, TimelineForm
-from .models import CompanyInternship, CourseInternship, Student, WeeklyFollowing, GraduationProject, Timeline, StudentNotification
+import pandas as pd
+from .forms import CompanyForm, CourseForm, LoginForm, WeeklyForm, GPForm, TimelineForm, RecommendedForm
+from .models import CompanyInternship, CourseInternship, Student, WeeklyFollowing, GraduationProject, Timeline, StudentNotification, TimlineFiles, GraduationDetails, RecommendedProject, StudentRating
 from datetime import datetime
+from django.http import FileResponse
 from doctor.models import Doctor, DoctorNotification
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from department.models import Department, DepartmentNotification
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-import time
-
 
 
 
@@ -121,6 +121,7 @@ def index(request):
 
   if request.method == 'POST':
 
+
     form = LoginForm(request.POST)
     if form.is_valid():
       username = form.cleaned_data.get('username')
@@ -135,6 +136,11 @@ def index(request):
             context.setdefault('allow_error', "You haven't permission to enter website.")
             return render(request, 'student/pages/index.html', context)
           
+          less_than_start = Department.objects.get(dept_name=stu_data.major).is_less_than_start()
+          if less_than_start:
+            context.setdefault('date_error', f'The registration interval for Graduation Project and Internship doesn\'t start yet.')
+            return render(request, 'student/pages/index.html', context)
+
           login(request, user)
           return redirect('stu-home')
         except:
@@ -147,6 +153,12 @@ def index(request):
     else:
       context.setdefault('valid_error', 'Enter valid Data.')
 
+
+
+
+  
+
+  
   return render(request, 'student/pages/index.html', context)
 
 
@@ -156,6 +168,7 @@ def index(request):
 ######################### LOGOUT ##########################
 ###########################################################
 def log_out(request):
+
   logout(request)
   return redirect('login')
 
@@ -172,6 +185,10 @@ def home(request):
 
   if type(student_rec) != Student:
     return redirect('login')
+
+
+
+
 
 
   context = {
@@ -280,7 +297,7 @@ def gp(request):
       data = form.cleaned_data
 
       # Check if doctors emails are correct.
-      for i in range(1,2):
+      for i in range(1,3):
         try:
           if 'email_' + str(i) in data.keys():
             docs = Doctor.objects.all()
@@ -541,7 +558,6 @@ def timeline(request):
         problem = data['problem']
 
 
-
       p = Timeline(important=important, doc=doc, update=update, final_release=final_release, new_release=new_release, 
                   research=research, programming=programming, problem=problem, 
                   web=web, mobile=mobile, network=network, cyber_security=cyber_security,
@@ -549,6 +565,15 @@ def timeline(request):
                   date=datetime.now(), publisher=student_rec)
       p.save()
 
+
+      files = None
+      if 'files' in data.keys():
+        files = request.FILES.getlist('files')
+        for file in files:
+          f = TimlineFiles(file=file)
+          f.save()
+          p.files.add(f)
+          p.save()
 
 
 
@@ -579,12 +604,20 @@ def timeline(request):
     stus = rec.members.all()
     if student_rec.stu in stus:
       posts = get_posts(rec)
-      context.setdefault('posts', posts)
+
+      full_posts = []
+      for post in posts:
+        files_full = []
+        for item in post.files.all():
+          files_full.append((str(item.file.name).split('.')[-1], item))
+
+        else:
+          full_posts.append((post,files_full))
+
+      context.setdefault('posts', full_posts)
       break
   else:
     return redirect('gp')
-
-
 
 
 
@@ -600,6 +633,30 @@ def timeline(request):
 
 
 
+#################################################################
+########################## DELETE POST ##########################
+#################################################################
+@login_required(login_url='login')
+def delete_timeline(request, post_id):
+  student_rec = is_student(request)
+
+  if type(student_rec) != Student:
+    return redirect('login')
+  
+  try:
+    post = Timeline.objects.get(id=post_id)
+    post.delete()
+  except ObjectDoesNotExist:
+    pass
+
+  return redirect('timeline')
+####################################################################################################
+####################################################################################################
+
+
+
+
+
 ################################################################
 ###################### RECOMMENED PROJECT ######################
 ################################################################
@@ -610,15 +667,178 @@ def rec_project(request):
   if type(student_rec) != Student:
     return redirect('login')
 
-
   context = {
     'title': 'Recommended Project',
     'user': request.user,
     'notifications': get_notification(request),
   }
+
+
+  # # Add sample student data for testing
+  # student_data = {
+  #     # 'username': 'test_user',
+  #     # 'course_subject': 'Web Development',  # Replace with the actual course subject
+  #     'web_dev_rating': 4.0,
+  #     'network_rating': 3.5,
+  #     'security_rating': 4.5,
+  #     'data_science_rating': 3.0,
+  # }
+
+
+
+
+
+
+  # try:
+  #   StudentRating.objects.get(stu_username=student_rec).delete()
+  # except ObjectDoesNotExist:
+  #   pass
+
+
+
+  
+  # Receive Form Submission
+  if request.method == 'POST':
+
+    student_data = {
+        'username': student_rec,
+        # 'course_subject': 'Web Development',  # Replace with the actual course subject
+        'web_dev_rating': request.POST['web'],
+        'network_rating': request.POST['network'],
+        'security_rating': request.POST['security'],
+        'data_science_rating': request.POST['data_science'],
+    }
+
+    try:
+      student = StudentRating(stu_username=student_rec, web_dev_rating=request.POST['web'],
+                        network_rating=request.POST['network'], security_rating=request.POST['security'],
+                        data_science_rating=request.POST['data_science'])
+      student.save()
+    except:
+      student = StudentRating.objects.get(stu_username=student_rec)
+      student.web_dev_rating      = request.POST['web']
+      student.network_rating      = request.POST['network']
+      student.security_rating     = request.POST['security']
+      student.data_science_rating = request.POST['data_science']
+      student.save()
+
+
+
+    # Try to retrieve the student or create if it doesn't exist
+    student, created = StudentRating.objects.get_or_create(stu_username=student_data['username'], defaults=student_data)
+
+
+
+
+
+
+
+
+    student_data_df = pd.DataFrame({
+    'web_dev': [student.web_dev_rating],
+    'network': [student.network_rating],
+    'security': [student.security_rating],
+    'data_science': [student.data_science_rating],
+    })
+
+    context.setdefault('student', student)
+    # return render(request, 'student/pages/Graduation-Project/rec-project.html', context)
+
+    # Fetch graduation projects from the database
+    recommended_projects = RecommendedProject.objects.all()
+
+    # Create a DataFrame for projects from the database
+    projects_data_df = pd.DataFrame(list(recommended_projects.values()))
+
+    # Calculate the similarity between the student and projects
+    student_ratings = student_data_df.values.flatten()
+    projects_ratings = projects_data_df[['web_dev', 'network', 'security', 'data_science']].values
+    projects_data_df['similarity'] = projects_ratings.dot(student_ratings)
+
+
+    # Filter projects based on similarity and sort them
+    top_5 = projects_data_df.sort_values(by='similarity', ascending=False).head(5)
+
+    # Filter projects that are recommended
+    recommended_project_titles = top_5['title'].tolist()
+    other_projects = projects_data_df[~projects_data_df['title'].isin(recommended_project_titles)]
+    other_projects2 = projects_data_df[projects_data_df['title'].isin(recommended_project_titles)]
+
+
+
+    top_5_projects = {}
+    for project in list(other_projects2.to_dict('records')):
+      p = RecommendedProject.objects.get(title=project['title'])
+      # top_5_projects.setdefault(p, p.details)
+
+      top_5_projects.setdefault(project['title'], (p.details, project['similarity']))
+
+
+
+
+
+
+    context.setdefault('recommended_projects', top_5_projects)
+    context.setdefault('other_projects', other_projects.to_dict('records'))
+
+
+  context.setdefault('form', RecommendedForm(request.POST))
+
+
+
+
+
+
+
+
+
   return render(request, 'student/pages/Graduation-Project/rec-project.html', context)
 ####################################################################################################
 ####################################################################################################
+####################################################################################################
+
+
+
+
+
+##########################@######################################
+######################## PROJECT DETAILS ########################
+###########################@#####################################
+@login_required(login_url='login')
+def project_details(request, project_id):
+  student_rec = is_student(request)
+
+  if type(student_rec) != Student:
+    return redirect('login')
+
+
+  context = {
+    'title': 'Recommended Project',
+    'user': request.user,
+    'notifications': get_notification(request),
+    'page_name'    : request.resolver_match.url_name,
+  }
+
+
+
+
+  try:
+    project = GraduationDetails.objects.get(id=project_id)
+    project_title = RecommendedProject.objects.get(details=project)
+    context.setdefault('project', project)
+    context.setdefault('project_title', project_title)
+  except ObjectDoesNotExist:
+    return redirect('rec-project')
+
+
+
+
+
+
+  return render(request, 'student/pages/Graduation-Project/project-details.html', context)
+####################################################################################################
+####################################################################################################
+
 
 
 
@@ -731,8 +951,10 @@ def company(request):
       'email'               : rec.email,
       'description_of_tasks': rec.description_of_tasks,
       'technologies'        : rec.technologies,
+      'doc_note'            : rec.doc_note,
     }
     context.setdefault('form', CompanyForm(returned_data))
+    context.setdefault('doc_note', CompanyInternship.objects.get(student=request.user).doc_note)
 
   except ObjectDoesNotExist:
     context.setdefault('form', CompanyForm())
@@ -816,28 +1038,40 @@ def courses(request):
       certificate=None
       data = form.cleaned_data
       if 'certificate' in request.FILES.keys():
-        certificate=request.FILES['certificate']
+        extensions = ['jpg', 'jpeg', 'jpg', 'png', 'gif', 'pdf', 'docx']
+        if not str(request.FILES['certificate']).split('.')[-1] in extensions:
+          context.setdefault('file_extensions_error', extensions)
+          file_extensions_error = True
+        else:
+          file_extensions_error = False
+          certificate=request.FILES['certificate']
+      else:
+        file_extensions_error = False
 
-      CourseInternship(stu=request.user, course=data['course'], hour=data['hour'],
-                        provider=data['provider'], certificate=certificate).save()
-      context.setdefault('success', 'The form has been filled out successfully.')
-      
-      
-      # Push notification to the doctor
-      message   = f'{student_rec.stu.first_name} {student_rec.stu.last_name} add new course for the internship.'
-      notify_doctor(student_rec.doc_superviser.doc, subject='Insert Courses - Internship', message=message, url_name='report', query_pk=student_rec.pk)
+      if not file_extensions_error:
+        CourseInternship(stu=request.user, course=data['course'], hour=data['hour'],
+                  provider=data['provider'], certificate=certificate).save()
+        context.setdefault('success', 'The form has been filled out successfully.')
+          
+        
+        # Push notification to the doctor
+        message   = f'{student_rec.stu.first_name} {student_rec.stu.last_name} add new course for the internship.'
+        notify_doctor(student_rec.doc_superviser.doc, subject='Insert Courses - Internship', message=message, url_name='report', query_pk=student_rec.pk)
 
-      dept_name = Department.objects.get(dept_name=student_rec.major)
-      notify_department(dept_name, subject='Insert Courses - Internship', message=message, url_name='student-report', query_pk=student_rec.pk)
+        dept_name = Department.objects.get(dept_name=student_rec.major)
+        notify_department(dept_name, subject='Insert Courses - Internship', message=message, url_name='student-report', query_pk=student_rec.pk)
+    
     else:
       context.setdefault('error', 'ERROR: Enter Valid Data.')
-
 
 
   # Return added courses
   try :
     records = CourseInternship.objects.filter(stu=request.user)
-    context.setdefault('records', records)
+    for rec in records:
+      rec.certificate = str(rec.certificate).split('/')[-1]
+    else:
+      context.setdefault('records', records)
   except:
     pass
 
@@ -870,13 +1104,36 @@ def update_courses(request, pk):
 
 
   if request.method == 'POST':
-    course = CourseInternship.objects.get(id=pk)
-    course.course = request.POST['course']
-    course.hour = request.POST['hour']
-    course.provider = request.POST['provider']
-    if 'certificate' in request.FILES.keys():
-      course.certificate=request.FILES['certificate']
-    course.save()
+
+    if not request.POST['course'].isspace() or  request.POST['hour'].isspace() or  request.POST['provider'].isspace():
+
+      if 'certificate' in request.FILES.keys():
+        extensions = ['jpg', 'jpeg', 'jpg', 'png', 'gif', 'pdf', 'docx']
+        if not str(request.FILES['certificate']).split('.')[-1] in extensions:
+          file_extensions_error = True
+        else:
+          file_extensions_error = False
+          certificate=request.FILES['certificate']
+      else:
+        certificate = None
+        file_extensions_error = False
+
+      if not file_extensions_error:
+
+        course = CourseInternship.objects.get(id=pk)
+        course.course = request.POST['course']
+        course.hour = request.POST['hour']
+        course.provider = request.POST['provider']
+        if certificate != None:
+          course.certificate = certificate
+        course.save()
+    else:
+      return redirect('courses')
+
+
+
+
+
 
     # Push notification to the doctor
     message   = f'{student_rec.stu.first_name} {student_rec.stu.last_name} update course for the internship.'
@@ -960,6 +1217,30 @@ def weekly_form(request, student):
 
 
 
+
+
+###############################################################
+####################### DOWNLOAD FILE #########################
+###############################################################
+def download_file(request, file_id):
+
+  try:
+    stored_file = CourseInternship.objects.get(id=file_id)
+
+    response = FileResponse(stored_file.certificate, content_type='application/octet-stream')
+    response['Content-Disposition'] = f'attachment; filename="{stored_file.certificate.name}"'
+    return response
+
+  except ObjectDoesNotExist:
+    stored_file = TimlineFiles.objects.get(id=file_id)
+
+    response = FileResponse(stored_file.file, content_type='application/octet-stream')
+    response['Content-Disposition'] = f'attachment; filename="{stored_file.file.name}"'
+    return response
+  except:
+    s = get_object_or_404(CourseInternship, pk=id)
+####################################################################################################
+####################################################################################################
 
 
 

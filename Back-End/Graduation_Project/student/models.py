@@ -3,6 +3,7 @@ from doctor.models import Doctor
 from django.contrib.auth.models import User
 
 
+
 # Create your models here.
 
 
@@ -23,8 +24,8 @@ class Student(models.Model):
     return str(self.stu)
 
 
-  def get_username(self):
-    return (self.stu)
+  # def get_username(self):
+  #   return (self.stu)
 
 
 
@@ -79,6 +80,87 @@ class GraduationProject(models.Model):
 
 
 ################################################################
+####################### STUDENT RATING #########################
+################################################################
+class StudentRating(models.Model):
+    
+  stu_username   = models.OneToOneField(Student, on_delete=models.CASCADE, null=True)
+  
+  web_dev_rating      = models.FloatField()
+  network_rating      = models.FloatField()
+  security_rating     = models.FloatField()
+  data_science_rating = models.FloatField()
+
+
+  def __str__(self):
+    return str(self.stu_username)
+
+
+
+
+################################################################
+##################### Recommended Project ######################
+################################################################
+
+
+class GraduationDetails(models.Model):
+
+  # project           = models.OneToOneField(RecommendedProject, on_delete=models.CASCADE)
+  overview       = models.TextField()
+
+  first_subtitle   = models.CharField(max_length=64, null=True)
+  first_paragraph  = models.TextField(null=True)
+
+  second_subtitle  = models.CharField(max_length=64, null=True)
+  second_paragraph = models.TextField(null=True)
+
+  weekly_hours     = models.IntegerField(default=0.0)
+
+
+  technologies_used = models.CharField(max_length=255)
+  what_to_learn     = models.TextField()
+
+
+  def __str__(self):
+    return self.overview
+
+
+
+class RecommendedProject(models.Model):
+
+  title = models.CharField(max_length=255, )
+  details = models.OneToOneField(GraduationDetails, on_delete=models.CASCADE, null=True)
+
+  web_dev      = models.FloatField(default=0.0)
+  network      = models.FloatField(default=0.0)
+  security     = models.FloatField(default=0.0)
+  data_science = models.FloatField(default=0.0)
+
+
+  # description  = models.TextField(default='')
+  # weekly_hours = models.IntegerField(default=0.0)
+  # title_sub    = models.CharField(max_length=255,default='')
+
+  def __str__(self):
+    return str(self.title)
+
+
+
+
+
+################################################################
+####################### TIMELINE FILES #########################
+################################################################
+class TimlineFiles(models.Model):
+  
+  file = models.FileField(upload_to='GP/Timeline/%Y/%B/%A', null=True)
+
+  def __str__(self):
+    return self.file.name.split('/')[-1]
+
+
+
+################################################################
 ########################## TIMELINE ############################
 ################################################################
 class Timeline(models.Model):
@@ -102,6 +184,7 @@ class Timeline(models.Model):
   machine_learning = models.BooleanField(default=False)
 
   post             = models.TextField()
+  files            = models.ManyToManyField(TimlineFiles)
   date             = models.DateTimeField(null=True)
   publisher        = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
 
@@ -109,6 +192,10 @@ class Timeline(models.Model):
 
   def __str__(self):
     return f'{self.publisher} -- {self.date.date().day} - {self.date.time()}'
+
+
+
+
 
 
 
@@ -136,7 +223,7 @@ class CompanyInternship(models.Model):
   technologies          = models.CharField(max_length=450,)
 
   # Acceptance
-  doc_note    = models.TextField(max_length=450, null=True, default='Ther is no Notes')
+  doc_note    = models.TextField(max_length=450, null=True, default='There is no Notes')
   int_com_acc = models.BooleanField(verbose_name='internship acceptance',default=False)
 
   def __str__(self):
@@ -155,7 +242,7 @@ class CourseInternship(models.Model):
   course      = models.CharField(max_length=80, verbose_name="Course Name")
   hour        = models.PositiveSmallIntegerField()
   provider    = models.CharField(max_length=80, verbose_name="Course Provider")
-  certificate = models.FileField(upload_to=f'Files/Internship/Courses/%Y/%B', null=True)
+  certificate = models.FileField(upload_to=f'Internship/Courses/%Y/%B', null=True)
 
   # Acceptance
   doc_note    = models.TextField(max_length=450, null=True, default='There is no any note yet.')

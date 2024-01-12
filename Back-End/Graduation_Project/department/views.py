@@ -180,9 +180,10 @@ def dashboard(request):
   except:
     return redirect('login-form')
   returned_data = {
-    'start'       : department.start,
-    'end'         : department.end,
-    'team_mem_num': department.num_team_member,
+    'start'           : department.start,
+    'end'             : department.end,
+    'team_mem_num'    : department.num_team_member,
+    'internship_week' : department.week,
   }
 
 
@@ -222,6 +223,7 @@ def dashboard(request):
       d.start           = data['start']
       d.end             = data['end']
       d.num_team_member = data['team_mem_num']
+      d.week            = data['internship_week']
       d.save()
     else:
       vaildation_error  = 'Enter Vaild Data'
@@ -528,6 +530,9 @@ def report(request, pk):
   # Get Student Courses Internship Info
   try:
     stu_course  = CourseInternship.objects.filter(stu=stu.stu)
+
+    for course in stu_course:
+      course.certificate = str(course.certificate).split('/')[-1]
   except:
     stu_course  = None
 

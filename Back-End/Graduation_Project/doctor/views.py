@@ -171,6 +171,9 @@ def log_out(request):
 def home(request):
   doctor_rec = is_doctor(request)
 
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
+
 
   context = {
     'title': 'Home',
@@ -192,6 +195,9 @@ def home(request):
 @login_required(login_url='signin')
 def teams(request):
   doctor_rec = is_doctor(request)
+
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
 
   context = {
     'title'        : 'Graduation Project Teams',
@@ -224,7 +230,10 @@ def teams(request):
 ###########################################################
 @login_required(login_url='signin')
 def team_details(request, pk):
-  doctor_rec = is_doctor(request) 
+  doctor_rec = is_doctor(request)
+
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
 
   context = {
     'title': 'Graduation Project Teams',
@@ -236,7 +245,7 @@ def team_details(request, pk):
   try:
     team = GraduationProject.objects.get(id=pk)
 
-    if team.email_1 != doctor_rec.doc.email and team.email_1 != doctor_rec.doc.email:
+    if team.email_1 != doctor_rec.doc.email and team.email_2 != doctor_rec.doc.email:
       return redirect('teams')
     else:
       context.setdefault('team', team)
@@ -262,7 +271,16 @@ def team_details(request, pk):
   # Get all posts of the team from timeline.
   try:
     posts = Timeline.objects.filter(team=team).order_by('-id')
-    context.setdefault('posts', posts)
+    full_posts = []
+    for post in posts:
+      files_full = []
+      for item in post.files.all():
+        files_full.append((str(item.file.name).split('.')[-1], item))
+
+      else:
+        full_posts.append((post,files_full))
+
+    context.setdefault('posts', full_posts)
   except:
     pass
 
@@ -281,6 +299,9 @@ def team_details(request, pk):
 @login_required(login_url='signin')
 def stu_list(request):
   doctor_rec = is_doctor(request) 
+
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
 
 
   # Get Students that belogns to authenticated Doctor.
@@ -308,7 +329,10 @@ def stu_list(request):
 ###########################################################
 @login_required(login_url='signin')
 def report(request, pk):
-  doctor_rec = is_doctor(request) 
+  doctor_rec = is_doctor(request)
+
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
 
 
 
@@ -349,7 +373,7 @@ def report(request, pk):
     'appcorform'   : AppCorForm(),
     'disappcorform': DisappCorForm(),
     'notifications': get_notification(request),
-    'weeks'        : report,
+    'weeks'        : report.count(),
     'weeks_name'   : weeks_name,
   }
   return render(request, 'doctor/pages/Internship/report.html', context)
@@ -358,7 +382,10 @@ def report(request, pk):
 
 
 def app_company(request, pk):
-  doctor_rec = is_doctor(request) 
+  doctor_rec = is_doctor(request)
+
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
 
   if request.method == 'POST':
 
@@ -392,6 +419,9 @@ def app_company(request, pk):
 def disapp_company(request, pk):
   doctor_rec = is_doctor(request)
 
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
+
 
   if request.method == 'POST':
 
@@ -422,9 +452,12 @@ def disapp_company(request, pk):
 def app_courses(request, pk):
   doctor_rec = is_doctor(request)
 
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
+  
+
 
   if request.method == 'POST':
-
     form = request.POST
 
     for value in form.values():
@@ -459,8 +492,11 @@ def app_courses(request, pk):
 def disapp_courses(request, pk):
   doctor_rec = is_doctor(request)
 
-  if request.method == 'POST':
+  if type(doctor_rec) != Doctor:
+    return redirect('signin')
 
+
+  if request.method == 'POST':
     form = request.POST
 
     for value in form.values():

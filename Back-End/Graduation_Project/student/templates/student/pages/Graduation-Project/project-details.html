@@ -1,0 +1,96 @@
+{% extends "student/base.html" %}
+
+
+
+
+
+
+{% block content %}
+  <main class="container-fluid py-5 px-4 col-lg-12 col-xl-9">
+    <section class="container py-5" id="rec-project">
+      <div class="pb-3">
+        <h2>{{project_title}}</h2>
+      </div>
+
+
+      <div class="pb-3">
+        <img src="https://via.placeholder.com/600x250/878f96/FFF?text={{project_title}}" alt="project-img" class="img-fluid" style="width: 100%; height: 20rem;">
+      </div>
+
+
+
+      <div class="container">
+        <div class="pt-3 my-3">
+          <div class="">
+            <h3>Overview</h3>
+          </div>
+
+          <div class="px-2">
+            <p class="fs-4 lead">{{project.overview}}</p>
+          </div>
+        </div>
+
+
+
+        <div class="py-3">
+          <div class="">
+            <h3>{{project.first_subtitle}}</h3>
+          </div>
+
+          <div class="px-2">
+            <p class="fs-4 lead">{{project.first_paragraph}}</p>
+          </div>
+        </div>
+
+
+
+        <div class="py-3">
+          <div class="">
+            <h3>{{project.second_subtitle}}</h3>
+          </div>
+
+          <div class="px-2">
+            <p class="fs-4 lead">{{project.second_paragraph}}</p>
+          </div>
+        </div>
+
+
+
+        <div class="py-3">
+          <div class="">
+            <h4 class="d-inline-block">Technologies used : </h4>
+            <span class="fs-4 lead">{{project.technologies_used}}</span>
+          </div>
+        </div>
+
+
+
+        <div class="py-3">
+          <div class="">
+            <h4 class="d-inline-block">Average Weekly Hours : </h4> <span class="fs-4 lead">{{project.weekly_hours}} hours.</span>
+          </div>
+        </div>
+
+
+
+        <div class="py-3">
+          <div class="">
+            <h4 class="d-inline-block">What to learn : </h4>
+            <span class="fs-4 lead">{{project.what_to_learn}}</span>
+          </div>
+        </div>
+
+
+
+
+
+
+
+      </div>
+
+
+
+
+    </section>
+  </main>
+{% endblock content %}

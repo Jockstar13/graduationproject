@@ -2,51 +2,143 @@
 
 
 
-{% block content %}
-  <main class="container-fluid py-5 px-4 col-lg-12 col-xl-9">
-    <section class="container py-5" id="rec-project">
-      <h2>Recommended Projects</h2>
 
-      <div class="table-responsive">
-          <table class="table table-striped my-5 shadow-lg">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Project Name</th>
-                <th>Description</th>
-                <th>Read</th>
-              </tr>
-            </thead>
-            <tbody class="table-group-divider">
-              <tr>
-                <th>1</th>
-                <td>Lorem, ipsum.</td>
-                <td>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                  Necessitatibus voluptates quod dolore debitis consectetur aliquid?</td>
-                  <td><a href="" class="btn btn-primary">read</a></td>
-              </tr>
-      
-              <tr>
-                <th>2</th>
-                <td>Lorem, ipsum.</td>
-                <td>Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Repudiandae laboriosam labore neque dolores, hic ullam inventore,
-                  facere nam facilis perspiciatis, quisquam amet.</td>
-                  <td><a href="" class="btn btn-primary">read</a></td>
-              </tr>
-      
-              <tr>
-                <th>3</th>
-                <td>Lorem, ipsum dolor.</td>
-                <td>Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Optio et delectus cupiditate quibusdam beatae tempora, placeat vel?
-                  Ipsum magni dicta nam debitis doloremque reiciendis consequatur!</td>
-                  <td><a href="" class="btn btn-primary">read</a></td>
-              </tr>
-      
-            </tbody>
-          </table>
+
+
+{% block content %}
+<main class="container-fluid py-5 px-4 col-lg-12 col-xl-9">
+  <section class="container py-5" id="rec-project">
+    <div class="container">
+      <!-- Form for student ratings -->
+      <div class="row  mb-4 rating-form">
+        <div class="col-md-8">
+          <div class="mb-5">
+            <h2>Your Ratings</h2>
+            <span class="lead ps-3">Fill out the form based on your interest and abilities in the field</span>  
+          </div>
+
+          <form method="post" action="{% url 'rec-project' %}">
+            {% csrf_token %}
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group mb-3 border border-1 border-dark rounded">
+                  <label for="web_dev_rating" class="input-group-text fw-bold" style="min-width: 11rem;">Web Development</label>
+                  {{form.web}}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group mb-3 border border-1 border-dark rounded">
+                  <label for="network_rating" class="input-group-text fw-bold" style="min-width: 11rem;">Network</label>
+                  {{form.network}}
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group mb-3 border border-1 border-dark rounded">
+                  <label for="security_rating" class="input-group-text fw-bold" style="min-width: 11rem;">Security</label>
+                  {{form.security}}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group mb-3 border border-1 border-dark rounded">
+                  <label for="data_science_rating" class="input-group-text fw-bold" style="min-width: 11rem;">Data Science</label>
+                  {{form.data_science}}
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <input type="submit" value="Update Ratings" class="btn btn-primary">
+            </div>
+          </form>
+        </div>
+    </div>
+
+
+
+
+
+
+      <!-- Top 5 Recommended projects -->
+    {% if recommended_projects %}
+    <div class="row">
+      <div class="col-md-8">
+        <h2 class="mb-4">Top 5 Recommended Projects</h2>
+        <div class="card-deck">
+            {% for key, value in recommended_projects.items %}
+              <a href="{% url 'project-details' value.0.id %}" class="text-decoration-none">
+                <div class="card mb-4">
+                  <div class="card-body">
+                    <h4 class="card-title">{{ key }}</h4>
+                    <p class="card-text text-truncate">{{ value.0.overview }}</p>
+                    <p class="card-text"><b>Average Weekly Hours :</b> {{ value.0.weekly_hours }} hours</p>
+                    <p class="card-text"><b>Similarity :</b> {{ value.1 }}</p>
+                    <span class="btn btn-primary">View Details</span>
+                  </div>
+                </div>
+              </a>
+            {% endfor %}
+        </div>
       </div>
-    </section>
-  </main>
+    </div>
+    
+    {% endif %}
+
+
+
+
+
+
+    {% if other_projects %}
+    
+        <!-- Other projects you might like -->
+        <div class="row mt-5">
+          <div class="col-md-10 p-2"> <!-- Add p-2 for small padding -->
+            <h2 class="mb-4">Other Projects You Might Like</h2>
+            <div id="otherProjectsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for project in other_projects %}
+                      {% if forloop.counter0|divisibleby:4 %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                          <div class="row">
+                      {% endif %}
+                              <div class="col-md-6 mb-4">
+                                <a href="{% url 'project-details' project.id %}" class="text-decoration-none">
+                                  <div class="card h-100 rounded shadow">
+                                    <div class="card-body">
+                                      <h5 class="card-title">{{ project.title }}</h5>
+                                      <p class="card-text">{{ project.details.weekly_hours }}</p>
+                                      <p class="card-text"><small class="text-muted">Weekly Hours: {{ project.details.weekly_hours }} hours</small></p>
+                                      <p class="card-text"><small class="text-muted">Similarity: {{ project.similarity }}</small></p>
+                                      <span class="text-primary text-decoration-underline">View Full Details</span>
+                                    </div>
+                                  </div>
+                                </a>
+                              </div>
+                      {% if forloop.counter|divisibleby:4 or forloop.last %}
+                              </div>
+                          </div>
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#otherProjectsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#otherProjectsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+
+  </section>
+</main>
+
+
 {% endblock content %}

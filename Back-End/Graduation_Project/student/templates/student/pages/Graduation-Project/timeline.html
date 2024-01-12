@@ -1,5 +1,5 @@
 {% extends "student/base.html" %}
-
+{% load static %}
 
 
 {% block content %}
@@ -98,7 +98,7 @@
           <div class="row">
             <div class="mb-3 col-md-12 col-lg-6">
               <label for="file" class="form-labe"></label>
-              <input class="form-control border-1 border-dark" type="file" id="file" multiple>
+              {{form.files}}
             </div>
           </div>
 
@@ -115,56 +115,93 @@
 
       </div>
     </section>
-
+    {% comment %} <div>{{posts.0.files.all}}</div> {% endcomment %}
+    {% comment %} <div>{{post_files}}</div> {% endcomment %}
     {% for post in posts %}
       <section class="container m-3">
-
+        
         <div class="p-3 my-5 rounded bg-white shadow-lg" >
-          <div id="head" class="fw-bold">
-            {% if post.important or post.problem %}
-              <div class="spinner-grow text-danger" style="height: 20px; width: 20px;"></div>
-            {% else %}
-              <i class="bi bi-circle-fill text-primary"></i>
-            {% endif %}
-            <span class="ps-3 pe-2">{{ post.date|date:"D" }}</span> {{post.date|date:"d M Y"}}
+          <div class="d-flex align-items-center justify-content-between">
+            <div id="head" class="fw-bold">
+              {% if post.0.important or post.0.problem %}
+                <div class="spinner-grow text-danger" style="height: 20px; width: 20px;"></div>
+              {% else %}
+                <i class="bi bi-circle-fill text-primary"></i>
+              {% endif %}
+              <span class="ps-3 pe-2">{{ post.0.date|date:"D" }}</span> {{post.0.date|date:"d M Y"}}
+            </div>
+
+            <div>
+              <i class="bi bi-three-dots fs-5" data-bs-toggle="dropdown"></i>
+              <ul class="dropdown-menu shadow">
+                <li><a class="dropdown-item" href="{% url 'delete_timeline' post.0.id %}">Delete</a></li>
+              </ul>
+            </div>
           </div>
 
           <div id="label" class="my-3">
-            {% if post.important %}<span class="badge text-bg-danger">important</span>{% endif %}
-            {% if post.doc %}<span class="badge text-bg-primary">documaentation</span>{% endif %}
-            {% if post.new_release %}<span class="badge text-bg-info">new release</span>{% endif %}
-            {% if post.final_release %}<span class="badge text-bg-success">final release</span>{% endif %}
-            {% if post.update %}<span class="badge text-bg-secondary">update</span>{% endif %}
-            {% if post.research %}<span class="badge text-bg-dark">research</span>{% endif %}
-            {% if post.programming %}<span class="badge text-bg-warning">programming</span>{% endif %}
-            {% if post.web %}<span class="badge text-bg-success">web</span>{% endif %}
-            {% if post.mobile %}<span class="badge text-bg-dark">mobile</span>{% endif %}
-            {% if post.network %}<span class="badge text-bg-primary">network</span>{% endif %}
-            {% if post.cyber_security %}<span class="badge text-bg-warning">cyber security</span>{% endif %}
-            {% if post.ai %}<span class="badge text-bg-info">ai</span>{% endif %}
-            {% if post.machine_learning %}<span class="badge text-bg-secondary">machine learning</span>{% endif %}
-            {% if post.problem %}<span class="badge text-bg-danger">problem</span>{% endif %}
+            {% if post.0.important %}<span class="badge text-bg-danger">important</span>{% endif %}
+            {% if post.0.doc %}<span class="badge text-bg-primary">documaentation</span>{% endif %}
+            {% if post.0.new_release %}<span class="badge text-bg-info">new release</span>{% endif %}
+            {% if post.0.final_release %}<span class="badge text-bg-success">final release</span>{% endif %}
+            {% if post.0.update %}<span class="badge text-bg-secondary">update</span>{% endif %}
+            {% if post.0.research %}<span class="badge text-bg-dark">research</span>{% endif %}
+            {% if post.0.programming %}<span class="badge text-bg-warning">programming</span>{% endif %}
+            {% if post.0.web %}<span class="badge text-bg-success">web</span>{% endif %}
+            {% if post.0.mobile %}<span class="badge text-bg-dark">mobile</span>{% endif %}
+            {% if post.0.network %}<span class="badge text-bg-primary">network</span>{% endif %}
+            {% if post.0.cyber_security %}<span class="badge text-bg-warning">cyber security</span>{% endif %}
+            {% if post.0.ai %}<span class="badge text-bg-info">ai</span>{% endif %}
+            {% if post.0.machine_learning %}<span class="badge text-bg-secondary">machine learning</span>{% endif %}
+            {% if post.0.problem %}<span class="badge text-bg-danger">problem</span>{% endif %}
           </div>
-
+          
 
           <div id="body" class="px-3 py-">
-            <p class="lead">{{post.post}}</p>
+            <p class="lead">{{post.0.post}}</p>
           </div>
 
-          {% comment %} <div id="att" class="px-3 mb-4">
-            <div class="border-start border-4 border-success rounded shadow w-50 m-2 ps-2">
-              <i class="bi bi-file-text fs-1 "></i>
-              <span class="pb-2">documentation.pdf</span>
+
+          {% for file in post.1 %}
+            <div id="att" class="px-3 mb-2">
+              <div class="">
+                <span class="d-inline-block">
+                  {% if file.0 == 'zip' %}
+                    <img src="{% static 'assets/img/all/zip.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'exe' %}
+                    <img src="{% static 'assets/img/all/exe.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'html' or file.0 == 'htm' %}
+                    <img src="{% static 'assets/img/all/html.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'css' %}
+                    <img src="{% static 'assets/img/all/css.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'js' %}
+                    <img src="{% static 'assets/img/all/js.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'docx' %}
+                    <img src="{% static 'assets/img/all/docx.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'pptx' %}
+                    <img src="{% static 'assets/img/all/ppt.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'xls' %}
+                    <img src="{% static 'assets/img/all/xls.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'pdf' %}
+                    <img src="{% static 'assets/img/all/pdf.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'mp4' or file.0 == 'gif' %}
+                    <img src="{% static 'assets/img/all/mp4.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% elif file.0 == 'png' or file.0 == 'jpg' or file.0 == 'jpeg' %}
+                    <img src="{% static 'assets/img/all/img.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% else %}
+                    <img src="{% static 'assets/img/all/file.png' %}" alt="file-img" class="img-fluid" style="width: 22px;">
+                  {% endif %}
+                </span>
+                <span class="d-inline-block text-truncate" style="max-width: 70%;"><a href="{% url 'download_file' file.1.id %}">
+                  {{file.1}}
+                </a></span>
+              </div>
             </div>
-            <div class="border-start border-4 border-success rounded shadow w-50 mx-2 ps-2">
-              <i class="bi bi-file-text fs-1 "></i>
-              <span class="d-bloc">project-forms.docx</span><br>
-            </div>
-          </div> {% endcomment %}
+          {% endfor %}
 
 
-          <div id="footer" class="my-2 px-3">
-            <span>by <b>{{post.publisher.stu.first_name}} {{post.publisher.stu.last_name}}</b> at {{post.date.time}}</span>
+          <div id="footer" class="my-2 mt-3 px-3">
+            <span>by <b>{{post.0.publisher.stu.first_name}} {{post.0.publisher.stu.last_name}}</b> at {{post.0.date.time}}</span>
           </div>
         </div>
       </section>

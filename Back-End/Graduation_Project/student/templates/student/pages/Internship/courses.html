@@ -28,7 +28,7 @@
                 <th class="px-3 py-2">Course</th>
                 <th class="px-3 py-2" style="width: 0%;">Hour</th>
                 <th class="px-3 py-2">Provider</th>
-                <th class="px-3 py-2" colspan='2'>Certificate</th>
+                <th class="px-3 py-2" colspan='2' style="width: 18%;">Certificate</th>
                 <th class="px-3 py-2">Note</th>
                 <th class="px-3 py-2">Update</th>
                 <th class="px-3 py-2">Delete</th>
@@ -37,13 +37,15 @@
             <tbody class="table-group-divider">
               {% for course in records %}
               <tr>
-                <form action="{% url 'update_courses' course.id %}" method="post" enctype="multipart/form-data">
+                <form action="{% url 'update_courses' course.id  %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <th class="text-center">{{forloop.counter}}</th>
-                    <td class="p-1"><input type="text" value="{{course.course}}" name="course"></td>
-                    <td class="p-1"><input type="text" value="{{course.hour}}" name="hour"></td>
-                    <td class="p-1"><input type="text" value="{{course.provider}}" name="provider"></td>
-                    <td class="p-1" style="width: 18%;">{{course.certificate}}</td>
+                    <td class="p-1"><input type="text" value="{{course.course}}" name="course" require></td>
+                    <td class="p-1"><input type="number" value="{{course.hour}}" name="hour" require></td>
+                    <td class="p-1"><input type="text" value="{{course.provider}}" name="provider" require></td>
+                    <td class="p-2" >
+                      <a href="{% url 'download_file' course.id %}" class="d-inline-block text-truncate" style="max-width: 15rem;">{{course.certificate}}</a>
+                    </td>
                     <td class="p-1" style="width: 8%;"><input type="file" name="certificate" class="form-control"></td>
                     <td class="p-1" style="width: 0%;">
                       <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#note{{forloop.counter}}">
@@ -51,10 +53,10 @@
                       </button>
                     </td>
                     <td class="p-1" style="width: 0%;"><button type="submit" class="btn btn-primary">Update</button></td>
-                    <td class="p-1" style="width: 0%;"><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_m">Delete</button></td>
+                    <td class="p-1" style="width: 0%;"><button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_m{{forloop.counter}}">Delete</button></td>
                 </form>
                 </tr>
-                <div class="modal fade" id="delete_m">
+                <div class="modal fade" id="delete_m{{forloop.counter}}">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -65,7 +67,7 @@
                         <p>Are you sure to delete this course ?</p>
                       </div>
                       <div class="modal-footer">
-                        <form action="{% url 'delete_courses' course.id%}" method="post" enctype="multipart/form-data">
+                        <form action="{% url 'delete_courses' course.id %}" method="post">
                           {% csrf_token %}
                           <input type="submit" value="Delete" class="btn btn-danger">
                         </form>
@@ -102,7 +104,18 @@
     
     {% endif %}
 
+
+
+
+
+
     <section class="container py-2">
+      
+      {% if file_extensions_error %}
+        <span class="text-danger">Choose from these extensions only : {{file_extensions_error}}</span>
+      {% endif %}
+
+
       <form action="{% url 'courses' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div id="course-form">
@@ -174,7 +187,7 @@
               <p>Are you sure to delete this course ?</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger">Delete</button>
+              <button type="button" class="btn btn-danger">soso</button>
             </div>
           </div>
         </div>

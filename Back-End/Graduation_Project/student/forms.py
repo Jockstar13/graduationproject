@@ -1,5 +1,6 @@
 from django import forms
 
+
 class LoginForm(forms.Form):
   
   username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': ''}))
@@ -24,7 +25,7 @@ class GPForm(forms.Form):
     ('Artificial Intelligence'        , 'Artificial Intelligence'),
     ('Mixed'                          , 'Mixed'),
   )
-  
+
   sems =(
     ('', 'Choose...'),
     ('First' , 'First'),
@@ -48,6 +49,18 @@ class GPForm(forms.Form):
   project_idea = forms.CharField(max_length=720, widget=forms.Textarea(attrs={'class': 'form-control', 'style': 'height: 7rem;'}))
   project_goal = forms.CharField(max_length=400, widget=forms.Textarea(attrs={'class': 'form-control', 'style': 'height: 7rem;'}))
   technologies = forms.CharField(max_length=400, widget=forms.Textarea(attrs={'class': 'form-control', 'style': 'height: 7rem;'}))
+
+
+
+################################################################
+##################### Graduation Project #######################
+################################################################
+class RecommendedForm(forms.Form):
+  
+  web          = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'max': '5', 'step': '0.5'}))
+  network      = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'max': '5', 'step': '0.5'}))
+  security     = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'max': '5', 'step': '0.5'}))
+  data_science = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control', 'min': '0', 'max': '5', 'step': '0.5'}))
 
 
 
@@ -78,9 +91,8 @@ class TimelineForm(forms.Form):
   machine_learning = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'btn-check', 'id': 'machine_learning'}))
 
 
-  post = forms.CharField(max_length=720 ,widget=forms.Textarea(attrs={'class':'form-control border-1 border-dark post', 'placeholder':'Post', 'style':'height: 7rem;'}))
-
-
+  post  = forms.CharField(max_length=2500 ,widget=forms.Textarea(attrs={'class':'form-control border-1 border-dark post', 'placeholder':'Post', 'style':'height: 7rem;'}))
+  files = forms.FileField(widget=forms.FileInput(attrs={'class': 'form-control border-1 border-dark', 'multiple': ''}), required=False)
 
 
 
@@ -111,7 +123,7 @@ class CompanyForm(forms.Form):
 
   # Technical Info
   description_of_tasks = forms.CharField(max_length=450, widget=forms.Textarea(attrs={'class':'form-control', 'style': 'height: 5rem'}))
-  technologies          = forms.CharField(max_length=450, widget=forms.Textarea(attrs={'class':'form-control', 'style': 'height: 5rem'}))
+  technologies         = forms.CharField(max_length=450, widget=forms.Textarea(attrs={'class':'form-control', 'style': 'height: 5rem'}))
 
 
 

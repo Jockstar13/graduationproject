@@ -40,6 +40,7 @@ table td {
 }
 
 table td input[type=text],
+table td input[type=number],
 table td input[type=file]{
   position: absolute;
   display: block;

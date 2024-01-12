@@ -14,9 +14,10 @@ class LoginForm(forms.Form):
 
 class DashboardForm(forms.Form):
 
-  start        = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type': 'date'}))
-  end          = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type': 'date'}))
-  team_mem_num = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+  start           = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type': 'date'}))
+  end             = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type': 'date'}))
+  team_mem_num    = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+  internship_week = forms.CharField(widget=forms.NumberInput(attrs={'class': 'form-control', 'min':'1', 'max':'7'}))
 
 
 class SetDoctorForm():

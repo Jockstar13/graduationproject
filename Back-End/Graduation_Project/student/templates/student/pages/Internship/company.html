@@ -23,7 +23,21 @@
     <h1 class="ps-3">Internship - Company</h1>
     
     <section class="container-fluid py-4 ps-4">
-      
+
+      {% if doc_note %}
+      <div class="py-2">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12">
+            <div class="input-group border border-1 border-dark rounded" style="height: 130px;">
+              <span class="input-group-text bg-primary-subtle fw-bold">Doctor Notes</span>
+              <input type="text" value="{{doc_note}}" disabled class="form-control bg-white">
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+
       <form action="{% url 'company'%}" method="post">
         {% csrf_token %}
 

@@ -1,0 +1,20 @@
+.list-group-item,
+.card {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+.list-group-item:hover,
+.card:hover {
+  transform: scale(1.05);
+}
+.list-group-item h4,
+.card-title {
+  color: #343a40;
+}
+.list-group-item p,
+.card-text {
+  color: #6c757d;
+}
