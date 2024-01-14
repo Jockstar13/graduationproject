@@ -136,10 +136,34 @@ def index(request):
             context.setdefault('allow_error', "You haven't permission to enter website.")
             return render(request, 'student/pages/index.html', context)
           
-          less_than_start = Department.objects.get(dept_name=stu_data.major).is_less_than_start()
-          if less_than_start:
+          dept = Department.objects.get(dept_name=stu_data.major)
+          if dept.is_less_than_start():
             context.setdefault('date_error', f'The registration interval for Graduation Project and Internship doesn\'t start yet.')
             return render(request, 'student/pages/index.html', context)
+          else:
+            if dept.is_greater_than_end():
+            
+              for i in range(1):
+                try:
+                  
+                  stu_course_rec = CourseInternship.objects.filter(stu=stu)
+                  if stu_course_rec:
+                    break
+
+                  stu_comp_rec = CompanyInternship.objects.get(student=stu)
+
+
+                except:
+                  stu_gp_rec = GraduationProject.objects.all()
+                  for rec in stu_gp_rec:
+                    if stu in rec.members.all():
+                      break
+                  else:
+                    context.setdefault('date_error', f'The registration interval for Graduation Project and Internship finished.')
+                    return render(request, 'student/pages/index.html', context)
+
+
+
 
           login(request, user)
           return redirect('stu-home')
@@ -296,23 +320,24 @@ def gp(request):
     if form.is_valid():
       data = form.cleaned_data
 
-      # Check if doctors emails are correct.
-      for i in range(1,3):
+
+      for i in range(1, 3):
         try:
-          if 'email_' + str(i) in data.keys():
+          if data['email_' + str(i)] != '':
             docs = Doctor.objects.all()
             for doc in docs:
+              
               if doc.doc.email == data['email_' + str(i)]:
                 break
             else:
-              context.setdefault('email_error', 'The email isn\'t correct.')
+              context.setdefault(f'email_{i}_error', 'The email isn\'t correct.')
               break
         except:
           pass
 
 
       # If doctors emails are incorrect, then reject the form.
-      if not 'email_error' in context.keys():
+      if not 'email_1_error' in context.keys() and not 'email_2_error' in context.keys():
         # Try to Update The Record From Database
         try:
           student_rec = is_student(request)
@@ -364,6 +389,7 @@ def gp(request):
           # Store Student Info Into txt File.
           rejected = 0
           rejected_stus = []
+          not_in_gp = []
           for i in range(dept.num_team_member):
             # Check if the data are spaces
             if request.POST['name' + str(i+1)].isspace() or request.POST['id' + str(i+1)].isspace() or request.POST['major' + str(i+1)].isspace():
@@ -388,11 +414,25 @@ def gp(request):
                   else:
                     context.setdefault('rejected_student', rejected_stus)
 
+                    # if not s.stu in rejected_stus:
+                    #   if team_record.members.count() != dept.num_team_member:
+                    #     team_record.members.add(s.stu)
+                except:
+                  continue
+
+                try:
+                  s = Student.objects.get(student_id=request.POST['id' + str(i+1)])
+                  if not s.in_gp:
+                    not_in_gp.append(s)
+                  else:
                     if not s.stu in rejected_stus:
                       if team_record.members.count() != dept.num_team_member:
                         team_record.members.add(s.stu)
+                  context.setdefault('not_in_gp', not_in_gp)
                 except:
-                  continue
+                  pass
+
+
           else:
             if rejected == dept.num_team_member:
               context.setdefault('valid_error', 'Enter at least one student.')

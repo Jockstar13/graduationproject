@@ -49,7 +49,6 @@
 
 
 
-
           <div class="container px-2 py-2">
             <h2>Students Info</h2>
 
@@ -62,6 +61,13 @@
                 </div>
               {% endfor %}
             {% endif %}
+
+            {% for stu in not_in_gp %}
+              <div class="text-danger">
+                {{stu.stu.first_name}} {{stu.stu.last_name}} ({{stu.stu.username}}) doesn't register in Graduation Project Course.
+              </div>
+            {% endfor %}
+
             <table class="table table-bordered table-striped mx-auto my-3 shadow-lg" style="width: 98%;">
               <thead class="table-primary">
                 <th style="width: 0%;">#</th>
@@ -149,7 +155,7 @@
                     <span class="input-group-text fw-bold">Email</span>
                     {{form.email_1}}
                   </div>
-                  <div class="text-danger">{{email_error}}</div>
+                  <div class="text-danger">{{email_1_error}}</div>
                 </div>
               </div>
   
@@ -167,7 +173,7 @@
                     <span class="input-group-text fw-bold">Email</span>
                     {{form.email_2}}
                   </div>
-                  <div class="text-danger">{{email_error}}</div>
+                  <div class="text-danger">{{email_2_error}}</div>
                 </div>
               </div>
             </div>
@@ -199,7 +205,6 @@
 
           <div class="container mx-3">
             <input type="submit" value="Submit" class="btn btn-primary p-2 w-25">
-            <input type="reset" value="Clear" class="btn btn-danger p-2 w-25">
           </div>
 
         </form>
